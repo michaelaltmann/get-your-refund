@@ -1,3 +1,11 @@
+// ==UserScript==
+// @name         Show Images on GetYourRefund
+// @namespace    http://getyourrefund.org/
+// @version      0.2
+// @description  Show images on document pages.
+// @match        https://*.getyourrefund.org/en/hub/clients/*/documents
+// @grant        none
+// ==/UserScript==
 javascript: (function () {
   function createRotater(img) {
     var rotation = 0;
