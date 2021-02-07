@@ -18,18 +18,11 @@ javascript: (function () {
   }
   function createFlipper(img) {
     return () => {
-      var rotation = parseInt(/rotate\((\d+)/.exec(img.style.transform)[1]);
-      if ( rotation === 0 || rotation === 2 ) {
-        // flip horizontally
-        var current_flip = parseInt(/scaleX\((-?\d+)/.exec(img.style.transform)[1]);
-        var new_flip = current_flip * -1;
-        var new_style = img.style.transform.replace(/scaleX\((-?\d+)/, "scaleX(" + new_flip );
-      } else {
-        // Flip vertically
-        var current_flip = parseInt(/scaleY\((-?\d+)/.exec(img.style.transform)[1]);
-        var new_flip = current_flip * -1;
-        var new_style = new_style = img.style.transform.replace(/scaleY\((-?\d+)/, "scaleY(" + new_flip );
-      }
+      // flip horizontally, no matter the rotation, which allows
+      // combinations that result in flipping in any direction
+      var current_flip = parseInt(/scaleX\((-?\d+)/.exec(img.style.transform)[1]);
+      var new_flip = current_flip * -1;
+      var new_style = img.style.transform.replace(/scaleX\((-?\d+)/, "scaleX(" + new_flip );
       img.style.transform = new_style;
     };
   }
