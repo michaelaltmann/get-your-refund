@@ -7,32 +7,18 @@
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
+  // Use the fact that transform are cumulative.  Prepend a rotation or flip
   function createRotater(img) {
-    var rotation = 0;
     return () => {
-      var current_rotation = parseInt(/rotate\((\d+)/.exec(img.style.transform)[1]);
-      rotation = (current_rotation + 90) % 360;
-      var new_rotation = img.style.transform.replace(/rotate\((\d+)/, "rotate(" + rotation );
-      img.style.transform = new_rotation;
+      img.style.transform = 'rotate(90deg) ' +img.style.transform;
     };
   }
   function createFlipper(img) {
     return () => {
-      var rotation = parseInt(/rotate\((\d+)/.exec(img.style.transform)[1]);
-      if ( rotation === 0 || rotation === 2 ) {
-        // flip horizontally
-        var current_flip = parseInt(/scaleX\((-?\d+)/.exec(img.style.transform)[1]);
-        var new_flip = current_flip * -1;
-        var new_style = img.style.transform.replace(/scaleX\((-?\d+)/, "scaleX(" + new_flip );
-      } else {
-        // Flip vertically
-        var current_flip = parseInt(/scaleY\((-?\d+)/.exec(img.style.transform)[1]);
-        var new_flip = current_flip * -1;
-        var new_style = new_style = img.style.transform.replace(/scaleY\((-?\d+)/, "scaleY(" + new_flip );
-      }
-      img.style.transform = new_style;
+            img.style.transform = 'scaleX(-1) ' +img.style.transform;
     };
   }
+  
   var pdfjslib;
   function loadPdf(url, canvas) {
     console.log("Loading " + url);
