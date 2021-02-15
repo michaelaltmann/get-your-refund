@@ -85,15 +85,15 @@ javascript: (function () {
   var formTableDataRows = document.querySelectorAll("table > tbody > tr")
   formTableDataRows.forEach((row) => {
     // check if previewTd already exists
-    var preExistingPreviewTd = document.getElementsByClassName('preview-td')
-    console.log('looking for column')
+    var preExistingPreviewTd = document.getElementsByClassName('preview_td')
+    console.log('looking for column', preExistingPreviewTd)
     if (preExistingPreviewTd.length === 0) {
       console.log('creating column')
       var imageLinkTd = row.getElementsByTagName('td')[1];
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
       var imageLinkHref = imageLinkTdATag.href;
       var previewTd = document.createElement('td');
-      previewTd.className = 'preview-td';
+      previewTd.className = 'preview_td';
       previewTd.style.width = "30%";
       row.appendChild(previewTd);
   
