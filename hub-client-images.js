@@ -69,30 +69,37 @@ javascript: (function () {
       "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   };
 
-  // Add new column for image previews 
-  var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
-  var additionalColumn = document.createElement('th');
-  additionalColumn.innerText = "Image Preview";
-  additionalColumn.id = "image_preview";
-  formTableHeaderRows[0].appendChild(additionalColumn);
+  // Add new column for image previews if one doesn't already exist
+  var preExistingPreviewHeader = document.getElementsByClassName('image_preview');
+  if (!preExistingPreviewHeader) {
+    var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
+    var additionalColumn = document.createElement('th');
+    additionalColumn.innerText = "Image Preview";
+    additionalColumn.id = "image_preview";
+    formTableHeaderRows[0].appendChild(additionalColumn);
+  }
 
-  // loop through table to get insert previews
+  // loop through table to get insert preview images
   var formTableDataRows = document.querySelectorAll("table > tbody > tr")
   formTableDataRows.forEach((row) => {
-    var imageLinkTd = row.getElementsByTagName('td')[1];
-    var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
-    var imageLinkHref = imageLinkTdATag.href;
-    var previewTd = document.createElement('td');
-    previewTd.id = 'preview-td';
-    row.appendChild(previewTd);
-
-    var imageTag = document.createElement("img");
-    imageTag.style.width = "100%";
-    imageTag.src = imageLinkHref;
-    previewTd.appendChild(imageTag);
+    // check if previewTd already exists
+    var preExistingPreviewTd = document.getElementsByClassName('preview_td')
+    if (!preExistingPreviewTd) {
+      var imageLinkTd = row.getElementsByTagName('td')[1];
+      var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
+      var imageLinkHref = imageLinkTdATag.href;
+      var previewTd = document.createElement('td');
+      previewTd.id = 'preview-td';
+      previewTd.style.width = "30%";
+      row.appendChild(previewTd);
+  
+      var imageTag = document.createElement("img");
+      imageTag.style.width = "100%";
+      imageTag.src = imageLinkHref;
+      previewTd.appendChild(imageTag);
+    }
   });
   
-
   // Loop through all the links to Hub documents
   var existing_container = document.getElementById("linked_images");
   if (existing_container) {
