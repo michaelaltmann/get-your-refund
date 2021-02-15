@@ -71,7 +71,9 @@ javascript: (function () {
 
   // Add new column for image previews if one doesn't already exist
   var preExistingPreviewHeader = document.getElementsByClassName('image_preview');
+  console.log('found exisitng header', preExistingPreviewHeader)
   if (preExistingPreviewHeader.length === 0) {
+    console.log('creatting header')
     var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
     var additionalColumn = document.createElement('th');
     additionalColumn.innerText = "Image Preview";
@@ -84,7 +86,9 @@ javascript: (function () {
   formTableDataRows.forEach((row) => {
     // check if previewTd already exists
     var preExistingPreviewTd = document.getElementsByClassName('preview_td')
+    console.log('looking for column')
     if (preExistingPreviewTd.length === 0) {
+      console.log('creating column')
       var imageLinkTd = row.getElementsByTagName('td')[1];
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
       var imageLinkHref = imageLinkTdATag.href;
