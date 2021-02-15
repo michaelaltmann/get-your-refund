@@ -126,12 +126,14 @@ javascript: (function () {
     }
   } else {
     var links = document.getElementsByTagName("a");
+    console.log('these are all the links', links)
     var container = document.createElement("div");
     container.id = "linked_images";
     container.className = "link_to_mage";
     container.width = "500px";
     for (var link_i = 0; link_i < links.length; link_i++) {
       var link = links[link_i];
+      console.log('this is the link i am working on now', link)
       var href = link.href;
       var link_txt = link.innerText;
       if (
@@ -144,17 +146,24 @@ javascript: (function () {
         sub_container.style.position = "relative";
         sub_container.style.width = "30%";
         sub_container.style.padding = "3px";
+        console.log('we have created a sub container', sub_container)
         var visible = null;
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement("canvas");
           sub_container.appendChild(visible);
+          console.log('we have the visible pdf canvas', visible)
           setTimeout(() => loadPdf(href, visible), 1500);
         } else {
           visible = document.createElement("img");
+          console.log('we have the visible image tag', visible)
           visible.style.width = "100%";
+          console.log('the image tag style is', visible.style.width)
           visible.src = link.href;
+          console.log('the image tag src is', visible.src)
           sub_container.appendChild(visible);
-          visible.onerror=function(){
+          console.log('we appended the visible tag to sub container', sub_container)
+          visible.onerror=function(msg, url, lineNo, columnNo, error){
+            console.log('there was an error', error)
             sub_container.parentNode.removeChild(sub_container);
           };
         }
