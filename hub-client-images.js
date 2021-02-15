@@ -77,7 +77,7 @@ javascript: (function () {
     var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
     var additionalColumn = document.createElement('th');
     additionalColumn.innerText = "Image Preview";
-    additionalColumn.id = "image_preview";
+    additionalColumn.className = "image_preview";
     formTableHeaderRows[0].appendChild(additionalColumn);
   }
 
@@ -93,7 +93,7 @@ javascript: (function () {
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
       var imageLinkHref = imageLinkTdATag.href;
       var previewTd = document.createElement('td');
-      previewTd.id = 'preview-td';
+      previewTd.className = 'preview-td';
       previewTd.style.width = "30%";
       row.appendChild(previewTd);
   
