@@ -83,7 +83,7 @@ javascript: (function () {
     if (preExistingPreviewHeader[0].style.display !== "none") {
       preExistingPreviewHeader[0].style.display = "none";
     } else {
-      preExistingPreviewHeader[0].style.display = "block";
+      preExistingPreviewHeader[0].style.display = null;
     }
   }
 
