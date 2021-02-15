@@ -73,7 +73,17 @@ javascript: (function () {
   var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
   var additionalColumn = document.createElement('th');
   additionalColumn.innerText = "Image Preview";
-  formTableHeaderRows[0].appendChild(additionalColumn)
+  additionalColumn.id = "image_preview";
+  formTableHeaderRows[0].appendChild(additionalColumn);
+
+  // loop through table to get insert previews
+  var formTableDataRows = document.querySelectorAll("table > tbody > tr")
+  formTableDataRows.forEach((row) => {
+    var previewTd = document.createElement('td');
+    previewTd.innerText = 'Hello Preview';
+    row.appendChild(previewTd);
+  });
+  
 
   // Loop through all the links to Hub documents
   var existing_container = document.getElementById("linked_images");
