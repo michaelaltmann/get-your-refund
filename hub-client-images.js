@@ -79,6 +79,12 @@ javascript: (function () {
     additionalColumn.innerText = "Image Preview";
     additionalColumn.className = "image_preview";
     formTableHeaderRows[0].appendChild(additionalColumn);
+  } else {
+    if (preExistingPreviewHeader[0].style.display !== "none") {
+      preExistingPreviewHeader[0].style.display = "none";
+    } else {
+      preExistingPreviewHeader[0].style.display = "block";
+    }
   }
 
   // loop through table to get insert preview images
@@ -102,6 +108,15 @@ javascript: (function () {
       imageTag.style.width = "100%";
       imageTag.src = imageLinkHref;
       previewTd.appendChild(imageTag);
+      imageTag.onerror = function() {
+        previewTd.parentNode.removeChild(previewTd)
+      }
+    } else {
+      if (preExistingPreviewTd.style.display !== "none") {
+        preExistingPreviewTd.style.display = "none";
+      } else {
+        preExistingPreviewTd.style.display = "block";
+      }
     }
   });
   
