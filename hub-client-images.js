@@ -79,8 +79,11 @@ javascript: (function () {
   // loop through table to get insert previews
   var formTableDataRows = document.querySelectorAll("table > tbody > tr")
   formTableDataRows.forEach((row) => {
+    var imageLinkTd = row.getElementsByTagName('td')[1];
+    var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
+    var imageLinkHref = imageLinkTdATag.href;
     var previewTd = document.createElement('td');
-    previewTd.innerText = 'Hello Preview';
+    previewTd.innerText = imageLinkHref;
     row.appendChild(previewTd);
   });
   
