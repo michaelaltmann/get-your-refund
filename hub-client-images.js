@@ -69,7 +69,7 @@ javascript: (function () {
       "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   };
 
-  // Add new column for image previews if one doesn't already exist
+  // Add new column header for image previews if one doesn't already exist
   var preExistingPreviewHeader = document.getElementsByClassName('image_preview');
   if (preExistingPreviewHeader.length === 0) {
     var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
@@ -85,21 +85,29 @@ javascript: (function () {
     }
   }
 
-  // loop through table to get insert preview images
+  // loop through table rows to create image previews (currently only available)
+  // for jpg and png
   var formTableDataRows = document.querySelectorAll("table > tbody > tr")
   formTableDataRows.forEach((row, index) => {
-    // check if previewTd already exists
+    // create unique ID per preview row -- preview_td_<row index>
     var previewTdId = `preview_td_${index}`
+    // check if previewTd already exists
     var preExistingPreviewTd = document.getElementById(previewTdId);
     if (!preExistingPreviewTd) {
+      // the 2nd column of the data files table is the file links
+      // grab the href file urls
       var imageLinkTd = row.getElementsByTagName('td')[1];
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
       var imageLinkHref = imageLinkTdATag.href;
+      // create an additional column per row to hold the preview images
       var previewTd = document.createElement('td');
+      // set column ID to prevew_td_<row index>
       previewTd.id = previewTdId;
       previewTd.style.width = "30%";
       row.appendChild(previewTd);
   
+      // create separate image tag to hold the previewable images
+      // TODO: figure out how to work with PDF files -- pdf files are the majority
       var imageTag = document.createElement("img");
       imageTag.style.width = "100%";
       imageTag.src = imageLinkHref;
@@ -126,14 +134,12 @@ javascript: (function () {
     }
   } else {
     var links = document.getElementsByTagName("a");
-    console.log('these are all the links', links)
     var container = document.createElement("div");
     container.id = "linked_images";
     container.className = "link_to_mage";
     container.width = "500px";
     for (var link_i = 0; link_i < links.length; link_i++) {
       var link = links[link_i];
-      console.log('this is the link i am working on now', link)
       var href = link.href;
       var link_txt = link.innerText;
       if (
@@ -146,24 +152,17 @@ javascript: (function () {
         sub_container.style.position = "relative";
         sub_container.style.width = "30%";
         sub_container.style.padding = "3px";
-        console.log('we have created a sub container', sub_container)
         var visible = null;
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement("canvas");
           sub_container.appendChild(visible);
-          console.log('we have the visible pdf canvas', visible)
           setTimeout(() => loadPdf(href, visible), 1500);
         } else {
           visible = document.createElement("img");
-          console.log('we have the visible image tag', visible)
           visible.style.width = "100%";
-          console.log('the image tag style is', visible.style.width)
           visible.src = link.href;
-          console.log('the image tag src is', visible.src)
           sub_container.appendChild(visible);
-          console.log('we appended the visible tag to sub container', sub_container)
           visible.onerror=function(msg, url, lineNo, columnNo, error){
-            console.log('there was an error', error)
             sub_container.parentNode.removeChild(sub_container);
           };
         }
