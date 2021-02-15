@@ -83,6 +83,7 @@ javascript: (function () {
     var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
     var imageLinkHref = imageLinkTdATag.href;
     var previewTd = document.createElement('td');
+    previewTd.id = 'preview-td'
     row.appendChild(previewTd);
 
     var imageTag = document.createElement("img");
