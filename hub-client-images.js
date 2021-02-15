@@ -69,6 +69,12 @@ javascript: (function () {
       "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   };
 
+  // Add new column for image previews 
+  var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
+  var additionalColumn = document.createElement('th');
+  additionalColumn.innerText = "Image Preview";
+  formTableHeaderRows[0].appendChild(additionalColumn)
+
   // Loop through all the links to Hub documents
   var existing_container = document.getElementById("linked_images");
   if (existing_container) {
