@@ -76,47 +76,20 @@ javascript: (function () {
   additionalColumn.id = "image_preview";
   formTableHeaderRows[0].appendChild(additionalColumn);
 
-  // loop through table to get preview image inserts 
+  // loop through table to get insert previews
   var formTableDataRows = document.querySelectorAll("table > tbody > tr")
   formTableDataRows.forEach((row) => {
-    var existing_preview_column = document.getElementsByClassName('preview-columns');
-    if (existing_preview_column) {
-      if (existing_preview_column.style.display !== "none") {
-        existing_preview_column.style.display = "none";
-      } else {
-        existing_preview_column.style.display = "block";
-      }
-    } else {
-      var imageLinkTd = row.getElementsByTagName('td')[1];
-      var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
-      var imageLinkHref = imageLinkTdATag.href;
-      var imageTitle = imageLinkTdATag.innerText;
+    var imageLinkTd = row.getElementsByTagName('td')[1];
+    var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
+    var imageLinkHref = imageLinkTdATag.href;
+    var previewTd = document.createElement('td');
+    previewTd.id = 'preview-td';
+    row.appendChild(previewTd);
 
-      if (
-        /\.pdf$/i.test(imageTitle) ||
-        /\.jpg$/i.test(imageTitle) ||
-        /\.jpeg$/i.test(imageTitle)
-      ) {
-        var previewTd = document.createElement('td');
-        previewTd.id = 'preview-td';
-        row.appendChild(previewTd);
-        previewTd.style.width = "30%";
-        var visible = null;
-        if (/\.pdf$/i.test(imageTitle)) {
-          visible = document.createElement("canvas");
-          previewTd.appendChild(visible);
-          setTimeout(() => loadPdf(imageLinkHref, visible), 1500);
-        } else {
-          visible = document.createElement("img");
-          visible.style.width = "100%";
-          visible.src = link.imageLinkHref;
-          imageLinkTd.appendChild(visible);
-          visible.onerror=function(){
-            previewTd.parentNode.removeChild(sub_container);
-          };
-        }
-      }
-    }
+    var imageTag = document.createElement("img");
+    imageTag.style.width = "100%";
+    imageTag.src = imageLinkHref;
+    previewTd.appendChild(imageTag);
   });
   
 
