@@ -86,7 +86,7 @@ javascript: (function () {
   formTableDataRows.forEach((row, index) => {
     // check if previewTd already exists
     var previewTdId = `preview_td_${index}`
-    var preExistingPreviewTd = document.getElementsById(previewTdId);
+    var preExistingPreviewTd = document.getElementById(previewTdId);
     console.log('looking for column', preExistingPreviewTd);
     if (preExistingPreviewTd.length === 0) {
       console.log('creating column')
