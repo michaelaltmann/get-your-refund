@@ -88,7 +88,7 @@ javascript: (function () {
     var previewTdId = `preview_td_${index}`
     var preExistingPreviewTd = document.getElementById(previewTdId);
     console.log('looking for column', preExistingPreviewTd);
-    if (preExistingPreviewTd.length === 0) {
+    if (!preExistingPreviewTd) {
       console.log('creating column')
       var imageLinkTd = row.getElementsByTagName('td')[1];
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
