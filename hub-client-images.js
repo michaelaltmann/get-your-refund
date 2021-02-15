@@ -71,9 +71,7 @@ javascript: (function () {
 
   // Add new column for image previews if one doesn't already exist
   var preExistingPreviewHeader = document.getElementsByClassName('image_preview');
-  console.log('found exisitng header', preExistingPreviewHeader)
   if (preExistingPreviewHeader.length === 0) {
-    console.log('creatting header')
     var formTableHeaderRows = document.querySelectorAll("table > thead > tr");
     var additionalColumn = document.createElement('th');
     additionalColumn.innerText = "Image Preview";
@@ -83,7 +81,7 @@ javascript: (function () {
     if (preExistingPreviewHeader[0].style.display !== "none") {
       preExistingPreviewHeader[0].style.display = "none";
     } else {
-      preExistingPreviewHeader[0].style.display = null;
+      preExistingPreviewHeader[0].style.display = "block";
     }
   }
 
@@ -93,9 +91,7 @@ javascript: (function () {
     // check if previewTd already exists
     var previewTdId = `preview_td_${index}`
     var preExistingPreviewTd = document.getElementById(previewTdId);
-    console.log('looking for column', preExistingPreviewTd);
     if (!preExistingPreviewTd) {
-      console.log('creating column')
       var imageLinkTd = row.getElementsByTagName('td')[1];
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
       var imageLinkHref = imageLinkTdATag.href;
@@ -115,7 +111,7 @@ javascript: (function () {
       if (preExistingPreviewTd.style.display !== "none") {
         preExistingPreviewTd.style.display = "none";
       } else {
-        preExistingPreviewTd.style.display = "block";
+        preExistingPreviewTd.style.display = null;
       }
     }
   });
