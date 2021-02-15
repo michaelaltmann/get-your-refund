@@ -83,17 +83,18 @@ javascript: (function () {
 
   // loop through table to get insert preview images
   var formTableDataRows = document.querySelectorAll("table > tbody > tr")
-  formTableDataRows.forEach((row) => {
+  formTableDataRows.forEach((row, index) => {
     // check if previewTd already exists
-    var preExistingPreviewTd = document.getElementsByClassName('preview_td')
-    console.log('looking for column', preExistingPreviewTd)
+    var previewTdId = `preview_td_${index}`
+    var preExistingPreviewTd = document.getElementsById(previewTdId);
+    console.log('looking for column', preExistingPreviewTd);
     if (preExistingPreviewTd.length === 0) {
       console.log('creating column')
       var imageLinkTd = row.getElementsByTagName('td')[1];
       var imageLinkTdATag = imageLinkTd.getElementsByTagName('a')[0];
       var imageLinkHref = imageLinkTdATag.href;
       var previewTd = document.createElement('td');
-      previewTd.className = 'preview_td';
+      previewTd.id = previewTdId;
       previewTd.style.width = "30%";
       row.appendChild(previewTd);
   
