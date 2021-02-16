@@ -7,12 +7,19 @@
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
+  function createEditor(img) {
+    return () => {
+      var editUrl = img.src + "/edit"
+      window.location.href = editUrl
+    };
+  }
   // Use the fact that transform are cumulative.  Prepend a rotation or flip
   function createRotater(img) {
     return () => {
       img.style.transform = 'rotate(90deg) ' + img.style.transform;
     };
   }
+  // Use the fact that transform are cumulative.  Prepend a rotation or flip
   function createFlipper(img) {
     return () => {
       img.style.transform = 'scaleX(-1) ' + img.style.transform;
@@ -143,6 +150,13 @@ javascript: (function () {
         label.href = link.href;
         sub_container.appendChild(label);
 
+        var editButton = document.createElement("button");
+        editButton.className = 'gyr-tool';
+        editButton.style.right = "4.5em";
+        editButton.innerHTML = "&#9998;";
+        editButton.onclick = createEditor(visible);
+        sub_container.appendChild(editButton);
+
         var rotateButton = document.createElement("button");
         rotateButton.className = 'gyr-tool';
         rotateButton.style.right = "2.5em";
@@ -153,7 +167,7 @@ javascript: (function () {
         var flipButton = document.createElement("button");
         flipButton.className = 'gyr-tool';
         flipButton.style.right = ".5em";
-        flipButton.innerHTML = "F";
+        flipButton.innerHTML = "&#8646;";
         flipButton.onclick = createFlipper(visible);
         sub_container.appendChild(flipButton);
 
