@@ -70,7 +70,11 @@ javascript: (function () {
   document.getElementsByTagName('head')[0].appendChild(link);
 */
   var st = document.createElement('style');
-  st.innerHTML = `.gyr-card {
+  st.innerHTML = `
+  .gyr-card-container {
+    width: 500px;
+  }
+  .gyr-card {
   border: 1px solid;
   border-color: darkgray;
   display: inline-block;
@@ -114,8 +118,7 @@ javascript: (function () {
     var links = document.getElementsByTagName("a");
     var container = document.createElement("div");
     container.id = "linked_images";
-    container.className = "link_to_mage";
-    container.width = "500px";
+    container.className = "gyr-card-container";
     for (var link_i = 0; link_i < links.length; link_i++) {
       var link = links[link_i];
       var href = link.href;
@@ -148,6 +151,8 @@ javascript: (function () {
         label.style.display = "block";
         label.innerHTML = link_txt;
         label.href = link.href;
+        label.target = "_blank";
+        label.rel = "noppener noreferrer";
         sub_container.appendChild(label);
 
         var editButton = document.createElement("button");
