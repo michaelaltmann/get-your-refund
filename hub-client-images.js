@@ -56,6 +56,12 @@ javascript: (function () {
       }
     );
   }
+  var link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('type', 'text/css');
+  link.setAttribute('href', 'https://raw.githubusercontent.com/michaelaltmann/get-your-refund/separate-css/hub-client-images.css');
+  document.getElementsByTagName('head')[0].appendChild(link);
+
   // Dynamically add PDF.js to the page
   // This should create a global var pdfjsLib
   var head = document.getElementsByTagName("head");
