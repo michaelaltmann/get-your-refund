@@ -56,11 +56,31 @@ javascript: (function () {
       }
     );
   }
-  var link = document.createElement('link');
+  /*var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('type', 'text/css');
   link.setAttribute('href', 'https://michaelaltmann.github.io/get-your-refund/hub-client-images.css');
   document.getElementsByTagName('head')[0].appendChild(link);
+*/
+  var st = document.createElement('style');
+  st.innerHTML = `.gyr-card {
+  border: 1px solid;
+  border-color: darkgray;
+  display: inline-block;
+  position: relative;
+  width: 30%;
+  padding: 2px;
+  margin: 2px;
+}
+
+.gyr-tool {
+  position: absolute;
+  bottom: 2.5em;
+  height: 2em;
+  width: 2em;
+}
+`
+  document.getElementsByTagName('head')[0].appendChild(st);
 
   // Dynamically add PDF.js to the page
   // This should create a global var pdfjsLib
