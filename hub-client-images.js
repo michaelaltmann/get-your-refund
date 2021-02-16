@@ -10,15 +10,15 @@ javascript: (function () {
   // Use the fact that transform are cumulative.  Prepend a rotation or flip
   function createRotater(img) {
     return () => {
-      img.style.transform = 'rotate(90deg) ' +img.style.transform;
+      img.style.transform = 'rotate(90deg) ' + img.style.transform;
     };
   }
   function createFlipper(img) {
     return () => {
-            img.style.transform = 'scaleX(-1) ' +img.style.transform;
+      img.style.transform = 'scaleX(-1) ' + img.style.transform;
     };
   }
-  
+
   var pdfjslib;
   function loadPdf(url, canvas) {
     console.log("Loading " + url);
@@ -87,16 +87,13 @@ javascript: (function () {
       var link = links[link_i];
       var href = link.href;
       var link_txt = link.innerText;
-      if (
-        /\.pdf$/i.test(link_txt) ||
-        /\.jpg$/i.test(link_txt) ||
-        /\.jpeg$/i.test(link_txt)
+      if (true // don't try to filter URLs
+        //    /\.pdf$/i.test(link_txt) ||
+        //    /\.jpg$/i.test(link_txt) ||
+        //    /\.jpeg$/i.test(link_txt)
       ) {
         var sub_container = document.createElement("div");
-        sub_container.style.display = "inline-block";
-        sub_container.style.position = "relative";
-        sub_container.style.width = "30%";
-        sub_container.style.padding = "3px";
+        sub_container.className = 'gyr-card';
         var visible = null;
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement("canvas");
@@ -107,13 +104,13 @@ javascript: (function () {
           visible.style.width = "100%";
           visible.src = link.href;
           sub_container.appendChild(visible);
-          visible.onerror=function(){
+          visible.onerror = function () {
             sub_container.parentNode.removeChild(sub_container);
           };
         }
-        
+
         visible.style.transform = "rotate(0deg) scaleX(1) scaleY(1)";
-        
+
         var label = document.createElement("a");
         label.style.display = "block";
         label.innerHTML = link_txt;
@@ -121,21 +118,15 @@ javascript: (function () {
         sub_container.appendChild(label);
 
         var rotateButton = document.createElement("button");
-        rotateButton.style.position = "absolute";
-        rotateButton.style.bottom = "2.5em";
-        rotateButton.style.right = "3em";
-        rotateButton.style.height = "2em";
-        rotateButton.style.height = "2em";
+        rotateButton.className = 'gyr-tool';
+        rotateButton.style.right = "2.5em";
         rotateButton.innerHTML = "&#8635;";
         rotateButton.onclick = createRotater(visible);
         sub_container.appendChild(rotateButton);
 
         var flipButton = document.createElement("button");
-        flipButton.style.position = "absolute";
-        flipButton.style.bottom = "2.5em";
+        flipButton.className = 'gyr-tool';
         flipButton.style.right = ".5em";
-        flipButton.style.height = "2em";
-        flipButton.style.width = "2em";
         flipButton.innerHTML = "F";
         flipButton.onclick = createFlipper(visible);
         sub_container.appendChild(flipButton);
