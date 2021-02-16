@@ -59,7 +59,7 @@ javascript: (function () {
   var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('type', 'text/css');
-  link.setAttribute('href', 'https://raw.githubusercontent.com/michaelaltmann/get-your-refund/separate-css/hub-client-images.css');
+  link.setAttribute('href', 'https://michaelaltmann.github.io/get-your-refund/hub-client-images.css');
   document.getElementsByTagName('head')[0].appendChild(link);
 
   // Dynamically add PDF.js to the page
