@@ -153,6 +153,7 @@ javascript: (function () {
         var editButton = document.createElement("button");
         editButton.className = 'gyr-tool';
         editButton.style.right = "4.5em";
+        editButton.title = "Edit";
         editButton.innerHTML = "&#9998;";
         editButton.onclick = createEditor(visible);
         sub_container.appendChild(editButton);
@@ -160,6 +161,7 @@ javascript: (function () {
         var rotateButton = document.createElement("button");
         rotateButton.className = 'gyr-tool';
         rotateButton.style.right = "2.5em";
+        rotateButton.title = "Rotate";
         rotateButton.innerHTML = "&#8635;";
         rotateButton.onclick = createRotater(visible);
         sub_container.appendChild(rotateButton);
@@ -167,6 +169,7 @@ javascript: (function () {
         var flipButton = document.createElement("button");
         flipButton.className = 'gyr-tool';
         flipButton.style.right = ".5em";
+        flipButton.title = "Flip";
         flipButton.innerHTML = "&#8646;";
         flipButton.onclick = createFlipper(visible);
         sub_container.appendChild(flipButton);
