@@ -79,6 +79,7 @@ javascript: (function () {
     border-color: darkgray;
     display: inline-block;
     position: relative;
+    vertical-align: bottom;
     width: 30%;
     padding: 2px;
     margin: 2px;
@@ -153,7 +154,7 @@ javascript: (function () {
           };
         }
 
-        visible.style.transform = "rotate(0deg) scaleX(1) scaleY(1)";
+        visible.style.transform = "";
 
         var label = document.createElement("a");
         label.style.display = "inline-block";
