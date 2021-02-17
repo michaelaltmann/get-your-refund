@@ -72,24 +72,30 @@ javascript: (function () {
   var st = document.createElement('style');
   st.innerHTML = `
   .gyr-card-container {
-    width: 500px;
+    width: 100%;
   }
   .gyr-card {
-  border: 1px solid;
-  border-color: darkgray;
-  display: inline-block;
-  position: relative;
-  width: 30%;
-  padding: 2px;
-  margin: 2px;
+    border: 1px solid;
+    border-color: darkgray;
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    padding: 2px;
+    margin: 2px;
 }
 
 .gyr-tool {
-  position: absolute;
-  bottom: 2.5em;
+  display: inline-block;
+  float: right;
   height: 2em;
-  width: 2em;
+  margin: 1px;
 }
+.gyr-tool-container {
+  height: 2em;
+  width:100%;
+  clear: both;
+}
+
 `
   document.getElementsByTagName('head')[0].appendChild(st);
 
@@ -130,6 +136,8 @@ javascript: (function () {
       ) {
         var sub_container = document.createElement("div");
         sub_container.className = 'gyr-card';
+        var tool_container = document.createElement("div");
+        tool_container.className = 'gyr-tool-container';
         var visible = null;
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement("canvas");
@@ -148,38 +156,39 @@ javascript: (function () {
         visible.style.transform = "rotate(0deg) scaleX(1) scaleY(1)";
 
         var label = document.createElement("a");
-        label.style.display = "block";
+        label.style.display = "inline-block";
         label.innerHTML = link_txt;
         label.href = link.href;
         label.target = "_blank";
         label.rel = "noppener noreferrer";
-        sub_container.appendChild(label);
+        tool_container.appendChild(label);
 
         var editButton = document.createElement("button");
         editButton.className = 'gyr-tool';
-        editButton.style.right = "4.5em";
         editButton.title = "Edit";
-        editButton.innerHTML = "&#9998;";
+        editButton.innerHTML = "Edit";
         editButton.onclick = createEditor(visible);
-        sub_container.appendChild(editButton);
 
         var rotateButton = document.createElement("button");
         rotateButton.className = 'gyr-tool';
-        rotateButton.style.right = "2.5em";
+        rotateButton.style.width = "2em";
         rotateButton.title = "Rotate";
         rotateButton.innerHTML = "&#8635;";
         rotateButton.onclick = createRotater(visible);
-        sub_container.appendChild(rotateButton);
 
         var flipButton = document.createElement("button");
         flipButton.className = 'gyr-tool';
-        flipButton.style.right = ".5em";
+        flipButton.style.width = "2em";
         flipButton.title = "Flip";
         flipButton.innerHTML = "&#8646;";
         flipButton.onclick = createFlipper(visible);
-        sub_container.appendChild(flipButton);
+
+        tool_container.appendChild(flipButton);
+        tool_container.appendChild(rotateButton);
+        tool_container.appendChild(editButton);
 
         container.appendChild(sub_container);
+        sub_container.appendChild(tool_container);
       }
     }
     var insert_in = document.getElementsByClassName("client-navigation ")[0];
