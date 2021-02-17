@@ -84,7 +84,16 @@ javascript: (function () {
     padding: 2px;
     margin: 2px;
 }
-
+.gyr-document-labels {
+  display: inline-block
+}
+.gyr-document-type {
+  font-weight: 700;
+  display: block
+}
+.gyr-document-link {
+  display: block
+}
 .gyr-tool {
   display: inline-block;
   float: right;
@@ -92,7 +101,7 @@ javascript: (function () {
   margin: 1px;
 }
 .gyr-tool-container {
-  height: 2em;
+  height: 2.5em;
   width:100%;
   clear: both;
 }
@@ -113,7 +122,6 @@ javascript: (function () {
       "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   };
 
-  // Loop through all the links to Hub documents
   var existing_container = document.getElementById("linked_images");
   if (existing_container) {
     if (existing_container.style.display !== "none") {
@@ -122,14 +130,22 @@ javascript: (function () {
       existing_container.style.display = "block";
     }
   } else {
-    var links = document.getElementsByTagName("a");
     var container = document.createElement("div");
     container.id = "linked_images";
     container.className = "gyr-card-container";
-    for (var link_i = 0; link_i < links.length; link_i++) {
-      var link = links[link_i];
+    // Loop through all the rows in the table of Hub documents
+    var formTableDataRows = document.querySelectorAll("table.data-table > tbody > tr")
+    formTableDataRows.forEach((row, index) => {
+      var tds = row.querySelectorAll("td");
+      // Assume 0th column has docType and 1st has link to file
+      var docTypeTd = tds[0];
+      var fileTd = tds[1];
+      var docType = docTypeTd.innerText;
+      var link = fileTd.querySelector("a");
+
       var href = link.href;
       var link_txt = link.innerText;
+      console.log(docType + ' ' + link_txt)
       if (true // don't try to filter URLs
         //    /\.pdf$/i.test(link_txt) ||
         //    /\.jpg$/i.test(link_txt) ||
@@ -156,13 +172,22 @@ javascript: (function () {
 
         visible.style.transform = "";
 
-        var label = document.createElement("a");
-        label.style.display = "inline-block";
-        label.innerHTML = link_txt;
-        label.href = link.href;
-        label.target = "_blank";
-        label.rel = "noppener noreferrer";
-        tool_container.appendChild(label);
+        var docTypeLabel = document.createElement("span");
+        docTypeLabel.className = 'gyr-document-type'
+        docTypeLabel.innerText = docType;
+
+        var fileLink = document.createElement("a");
+        fileLink.className = 'gyr-document-link'
+        fileLink.innerHTML = link_txt;
+        fileLink.href = link.href;
+        fileLink.target = "_blank";
+        fileLink.rel = "noppener noreferrer";
+
+        var labels = document.createElement("span");
+        labels.className = "gyr-document-labels";
+        labels.appendChild(docTypeLabel)
+        labels.appendChild(fileLink)
+        tool_container.appendChild(labels);
 
         var editButton = document.createElement("button");
         editButton.className = 'gyr-tool';
@@ -190,8 +215,10 @@ javascript: (function () {
 
         container.appendChild(sub_container);
         sub_container.appendChild(tool_container);
+
       }
-    }
+    })
+
     var insert_in = document.getElementsByClassName("client-navigation ")[0];
     insert_in.appendChild(container);
   }
