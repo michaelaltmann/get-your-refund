@@ -7,18 +7,25 @@
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
+  function createEditor(img) {
+    return () => {
+      var editUrl = img.src + "/edit"
+      window.location.href = editUrl
+    };
+  }
   // Use the fact that transform are cumulative.  Prepend a rotation or flip
   function createRotater(img) {
     return () => {
-      img.style.transform = 'rotate(90deg) ' +img.style.transform;
+      img.style.transform = 'rotate(90deg) ' + img.style.transform;
     };
   }
+  // Use the fact that transform are cumulative.  Prepend a rotation or flip
   function createFlipper(img) {
     return () => {
-            img.style.transform = 'scaleX(-1) ' +img.style.transform;
+      img.style.transform = 'scaleX(-1) ' + img.style.transform;
     };
   }
-  
+
   var pdfjslib;
   function loadPdf(url, canvas) {
     console.log("Loading " + url);
@@ -56,6 +63,52 @@ javascript: (function () {
       }
     );
   }
+  /*var link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('type', 'text/css');
+  link.setAttribute('href', 'https://michaelaltmann.github.io/get-your-refund/hub-client-images.css');
+  document.getElementsByTagName('head')[0].appendChild(link);
+*/
+  var st = document.createElement('style');
+  st.innerHTML = `
+  .gyr-card-container {
+    width: 100%;
+  }
+  .gyr-card {
+    border: 1px solid;
+    border-color: darkgray;
+    display: inline-block;
+    position: relative;
+    vertical-align: bottom;
+    width: 30%;
+    padding: 2px;
+    margin: 2px;
+}
+.gyr-document-labels {
+  display: inline-block
+}
+.gyr-document-type {
+  font-weight: 700;
+  display: block
+}
+.gyr-document-link {
+  display: block
+}
+.gyr-tool {
+  display: inline-block;
+  float: right;
+  height: 2em;
+  margin: 1px;
+}
+.gyr-tool-container {
+  height: 2.5em;
+  width:100%;
+  clear: both;
+}
+
+`
+  document.getElementsByTagName('head')[0].appendChild(st);
+
   // Dynamically add PDF.js to the page
   // This should create a global var pdfjsLib
   var head = document.getElementsByTagName("head");
@@ -69,7 +122,6 @@ javascript: (function () {
       "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   };
 
-  // Loop through all the links to Hub documents
   var existing_container = document.getElementById("linked_images");
   if (existing_container) {
     if (existing_container.style.display !== "none") {
@@ -78,25 +130,31 @@ javascript: (function () {
       existing_container.style.display = "block";
     }
   } else {
-    var links = document.getElementsByTagName("a");
     var container = document.createElement("div");
     container.id = "linked_images";
-    container.className = "link_to_mage";
-    container.width = "500px";
-    for (var link_i = 0; link_i < links.length; link_i++) {
-      var link = links[link_i];
+    container.className = "gyr-card-container";
+    // Loop through all the rows in the table of Hub documents
+    var formTableDataRows = document.querySelectorAll("table.data-table > tbody > tr")
+    formTableDataRows.forEach((row, index) => {
+      var tds = row.querySelectorAll("td");
+      // Assume 0th column has docType and 1st has link to file
+      var docTypeTd = tds[0];
+      var fileTd = tds[1];
+      var docType = docTypeTd.innerText;
+      var link = fileTd.querySelector("a");
+
       var href = link.href;
       var link_txt = link.innerText;
-      if (
-        /\.pdf$/i.test(link_txt) ||
-        /\.jpg$/i.test(link_txt) ||
-        /\.jpeg$/i.test(link_txt)
+      console.log(docType + ' ' + link_txt)
+      if (true // don't try to filter URLs
+        //    /\.pdf$/i.test(link_txt) ||
+        //    /\.jpg$/i.test(link_txt) ||
+        //    /\.jpeg$/i.test(link_txt)
       ) {
         var sub_container = document.createElement("div");
-        sub_container.style.display = "inline-block";
-        sub_container.style.position = "relative";
-        sub_container.style.width = "30%";
-        sub_container.style.padding = "3px";
+        sub_container.className = 'gyr-card';
+        var tool_container = document.createElement("div");
+        tool_container.className = 'gyr-tool-container';
         var visible = null;
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement("canvas");
@@ -107,42 +165,60 @@ javascript: (function () {
           visible.style.width = "100%";
           visible.src = link.href;
           sub_container.appendChild(visible);
-          visible.onerror=function(){
+          visible.onerror = function () {
             sub_container.parentNode.removeChild(sub_container);
           };
         }
-        
-        visible.style.transform = "rotate(0deg) scaleX(1) scaleY(1)";
-        
-        var label = document.createElement("a");
-        label.style.display = "block";
-        label.innerHTML = link_txt;
-        label.href = link.href;
-        sub_container.appendChild(label);
+
+        visible.style.transform = "";
+
+        var docTypeLabel = document.createElement("span");
+        docTypeLabel.className = 'gyr-document-type'
+        docTypeLabel.innerText = docType;
+
+        var fileLink = document.createElement("a");
+        fileLink.className = 'gyr-document-link'
+        fileLink.innerHTML = link_txt;
+        fileLink.href = link.href;
+        fileLink.target = "_blank";
+        fileLink.rel = "noppener noreferrer";
+
+        var labels = document.createElement("span");
+        labels.className = "gyr-document-labels";
+        labels.appendChild(docTypeLabel)
+        labels.appendChild(fileLink)
+        tool_container.appendChild(labels);
+
+        var editButton = document.createElement("button");
+        editButton.className = 'gyr-tool';
+        editButton.title = "Edit";
+        editButton.innerHTML = "Edit";
+        editButton.onclick = createEditor(visible);
 
         var rotateButton = document.createElement("button");
-        rotateButton.style.position = "absolute";
-        rotateButton.style.bottom = "2.5em";
-        rotateButton.style.right = "3em";
-        rotateButton.style.height = "2em";
-        rotateButton.style.height = "2em";
+        rotateButton.className = 'gyr-tool';
+        rotateButton.style.width = "2em";
+        rotateButton.title = "Rotate";
         rotateButton.innerHTML = "&#8635;";
         rotateButton.onclick = createRotater(visible);
-        sub_container.appendChild(rotateButton);
 
         var flipButton = document.createElement("button");
-        flipButton.style.position = "absolute";
-        flipButton.style.bottom = "2.5em";
-        flipButton.style.right = ".5em";
-        flipButton.style.height = "2em";
+        flipButton.className = 'gyr-tool';
         flipButton.style.width = "2em";
-        flipButton.innerHTML = "F";
+        flipButton.title = "Flip";
+        flipButton.innerHTML = "&#8646;";
         flipButton.onclick = createFlipper(visible);
-        sub_container.appendChild(flipButton);
+
+        tool_container.appendChild(flipButton);
+        tool_container.appendChild(rotateButton);
+        tool_container.appendChild(editButton);
 
         container.appendChild(sub_container);
+        sub_container.appendChild(tool_container);
+
       }
-    }
+    })
+
     var insert_in = document.getElementsByClassName("client-navigation ")[0];
     insert_in.appendChild(container);
   }

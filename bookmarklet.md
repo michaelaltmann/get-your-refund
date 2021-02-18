@@ -23,3 +23,23 @@ javascript: (function() {
 ```
 
 [See the code behind it on Github](https://github.com/michaelaltmann/get-your-refund).
+
+## Testing locally
+
+If you make modifications to the javascript code and want to test them locally,
+start an http server in this directory that will server up the javascript file
+with the right content-type. For example, with python run
+
+```
+python3 -m http.server 9000
+```
+
+Once you have a local server running, create a bookmarklet whose content is
+
+```
+javascript: (function() {
+    var js = document.createElement('script');
+    js.setAttribute('src', 'http://localhost:9000/hub-client-images.js');
+    document.body.appendChild(js);
+})();
+```
