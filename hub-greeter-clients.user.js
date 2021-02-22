@@ -4,7 +4,7 @@
 // @namespace    http://getyourrefund.org/
 // @version      0.3
 // @description  Flag clients not of interest to English-only greeters
-// @match        https://*.getyourrefund.org/en/hub/clients
+// @match        https://*.getyourrefund.org/en/hub/clients*
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
