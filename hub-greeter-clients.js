@@ -2,9 +2,9 @@
 // @name         Flag client list on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.js
 // @namespace    http://getyourrefund.org/
-// @version      0.2
+// @version      0.3
 // @description  Flag clients not of interest to English-only greeters
-// @match        https://*.getyourrefund.org/en/hub/clients/
+// @match        https://*.getyourrefund.org/en/hub/clients
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
