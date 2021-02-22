@@ -1,4 +1,4 @@
-# GetYourRefund Bookmarklet
+# GetYourRefund Image Bookmarklet
 
 To show images of documents uploaded to the hub, drag the link below into your bookmarks bar. When on the Documents page, then click that bookmark to render the images. You need to repeat this on every page.
 
@@ -23,6 +23,25 @@ javascript: (function() {
 ```
 
 [See the code behind it on Github](https://github.com/michaelaltmann/get-your-refund).
+
+# GetYourRefund Client Flagger Bookmarklet
+
+This bookmarklet flags in blue, those clients that most greeters will want to avoid because they fall into one of the following categories
+
+- Spanish speaking
+- Virtial VITA (the inbox icon)
+- Associated with a partner org that handling their own greeting.
+  Drag the link below to your bookmarks bar. Then when you are on the
+  list of clients, clck the bookmarks to flag those clients in blue.
+  <a href="javascript: (function() {
+      var js = document.createElement('script');
+      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-greeter-clients.user.js');
+      document.body.appendChild(js);
+  })();">Flag Clients on GYR Hub</a>
+
+You can also set up TamperMonkey to run this whenever you visit the client page.
+Install TamperMonkey in your browser and then visit
+https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
 
 ## Testing locally
 
