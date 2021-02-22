@@ -10,7 +10,7 @@ javascript: (function () {
   function createEditor(img) {
     return () => {
       var editUrl = img.src + "/edit"
-      window.location.href = editUrl
+      window.open(editUrl, "_edit_document")
     };
   }
   // Use the fact that transform are cumulative.  Prepend a rotation or flip
