@@ -31,9 +31,11 @@ This bookmarklet flags in blue, those clients that most greeters will want to av
 - Spanish speaking
 - Virtial VITA (the inbox icon)
 - Associated with a partner org that handling their own greeting.
-  Drag the link below to your bookmarks bar. Then when you are on the
-  list of clients, clck the bookmarks to flag those clients in blue.
-  <a href="javascript: (function() {
+
+Drag the link below to your bookmarks bar. Then when you are on the
+list of clients, clck the bookmarks to flag those clients in blue.
+
+<a href="javascript: (function() {
       var js = document.createElement('script');
       js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-greeter-clients.user.js');
       document.body.appendChild(js);
