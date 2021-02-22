@@ -12,7 +12,7 @@ a.button-link {
 
 </style>
 
-To show images of documents uploaded to the hub, drag the link below into your bookmarks bar. When on the Documents page, then click that bookmark to render the images. You need to repeat this on every page.
+To show images of documents uploaded to the hub, drag the gray button below into your bookmarks bar. When on the Documents page, then click that bookmark to render the images. You need to repeat this on every page.
 
 <a class='button-link'  href="javascript: (function() {
     var js = document.createElement('script');
@@ -44,7 +44,7 @@ This bookmarklet flags in blue, those clients that most greeters will want to av
 - Virtial VITA (the inbox icon)
 - Associated with a partner org that handling their own greeting.
 
-Drag the link below to your bookmarks bar. Then when you are on the
+Drag the gray button below to your bookmarks bar. Then when you are on the
 list of clients, clck the bookmarks to flag those clients in blue.
 
 <a class='button-link' href="javascript: (function() {
