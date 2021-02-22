@@ -2,7 +2,7 @@
 // @name         Flag client list on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.4
+// @version      0.5
 // @description  Flag clients not of interest to English-only greeters
 // @match        https://*.getyourrefund.org/en/hub/clients*
 // @grant        none
@@ -11,7 +11,7 @@ javascript: (function () {
     var st = document.createElement('style');
     st.innerHTML = `
     .gyr-client-ignore {
-        color: pink !important;
+        color: #52a0bf !important;
     }
     `
     document.getElementsByTagName('head')[0].appendChild(st);
