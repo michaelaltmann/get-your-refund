@@ -1,12 +1,24 @@
 # GetYourRefund Image Bookmarklet
 
+<style>
+a.button-link {
+  background-color: darkgray;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+</style>
+
 To show images of documents uploaded to the hub, drag the link below into your bookmarks bar. When on the Documents page, then click that bookmark to render the images. You need to repeat this on every page.
 
-<a href="javascript: (function() {
+<a class='button-link'  href="javascript: (function() {
     var js = document.createElement('script');
     js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-client-images.js');
     document.body.appendChild(js);
-})();">Show Images on GYR Hub</a>
+})();">Images Gallery on GYR Hub</a>
 
 <img src="gyr-hub-client-images-bookmarklet.gif"/>
 
@@ -35,7 +47,7 @@ This bookmarklet flags in blue, those clients that most greeters will want to av
 Drag the link below to your bookmarks bar. Then when you are on the
 list of clients, clck the bookmarks to flag those clients in blue.
 
-<a href="javascript: (function() {
+<a class='button-link' href="javascript: (function() {
       var js = document.createElement('script');
       js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-greeter-clients.user.js');
       document.body.appendChild(js);
