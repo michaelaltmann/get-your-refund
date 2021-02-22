@@ -7,9 +7,8 @@
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
-  function createEditor(img) {
+  function createEditor(editUrl) {
     return () => {
-      var editUrl = img.src + "/edit"
       window.open(editUrl, "_edit_document")
     };
   }
@@ -143,10 +142,8 @@ javascript: (function () {
       var docType = docTypeTd.innerText;
       var link = fileTd.querySelector("a");
 
-      var href = link.href;
       var link_txt = link.innerText;
-      console.log(docType + ' ' + link_txt)
-      if (true // don't try to filter URLs
+      if (true // Don't try to filter based on URLs
         //    /\.pdf$/i.test(link_txt) ||
         //    /\.jpg$/i.test(link_txt) ||
         //    /\.jpeg$/i.test(link_txt)
@@ -193,7 +190,7 @@ javascript: (function () {
         editButton.className = 'gyr-tool';
         editButton.title = "Edit";
         editButton.innerHTML = "Edit";
-        editButton.onclick = createEditor(visible);
+        editButton.onclick = createEditor(link.href + "/edit");
 
         var rotateButton = document.createElement("button");
         rotateButton.className = 'gyr-tool';
