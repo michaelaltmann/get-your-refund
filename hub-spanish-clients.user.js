@@ -30,7 +30,6 @@ javascript: (function () {
             var language = tds[3].innerText;
             var returnListTd = tds[7];
             var isVirtual = returnListTd.querySelectorAll('span.icon-move_to_inbox').length > 0;
-            // console.log(`${clientId} ${org} ${language} ${isVirtual}`)
             if (language.toLowerCase().trim() != 'spanish') {
                 row.classList.add('gyr-client-ignore')
             }
