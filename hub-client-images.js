@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Show Image Gallery on GetYourRefund Hub
 // @namespace    http://getyourrefund.org/
-// @version      0.3
+// @version      0.4
 // @description  Show images on document pages.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents
 // @grant        none
@@ -9,7 +9,7 @@
 javascript: (function () {
   function createEditor(editUrl) {
     return () => {
-      window.open(editUrl, "_edit_document")
+      window.location.href = editUrl
     };
   }
   // Use the fact that transform are cumulative.  Prepend a rotation or flip
