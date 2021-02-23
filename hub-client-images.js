@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Show Image Gallery on GetYourRefund Hub
 // @namespace    http://getyourrefund.org/
-// @version      0.4
+// @version      0.5
 // @description  Show images on document pages.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents
 // @grant        none
@@ -156,7 +156,7 @@ javascript: (function () {
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement("canvas");
           sub_container.appendChild(visible);
-          setTimeout(() => loadPdf(href, visible), 1500);
+          setTimeout(() => loadPdf(link.href, visible), 1500);
         } else {
           visible = document.createElement("img");
           visible.style.width = "100%";
