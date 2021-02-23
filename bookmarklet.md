@@ -57,6 +57,23 @@ You can also set up TamperMonkey to run this whenever you visit the client page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
 
+# GetYourRefund Spanish Client Bookmarklet
+
+This bookmarklet shows only those clients that list Spanish as their language of choice.
+
+Drag the gray button below to your bookmarks bar. Then when you are on the
+list of clients, clck the bookmarks to flag those clients in blue.
+
+<a class='button-link' href="javascript: (function() {
+      var js = document.createElement('script');
+      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-spanish-clients.user.js');
+      document.body.appendChild(js);
+  })();">Spanish Clients on GYR Hub</a>
+
+You can also set up TamperMonkey to run this whenever you visit the client page.
+Install TamperMonkey in your browser and then visit
+https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
+
 ## Testing locally
 
 If you make modifications to the javascript code and want to test them locally,
