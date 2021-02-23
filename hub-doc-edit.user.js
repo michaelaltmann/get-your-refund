@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Flag client list on GetYourRefund
+// @name         Image Preview for Document Edit
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-doc-edit.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.1
+// @version      0.2
 // @description  Adds an image preview to the edit document page. Does not work for PDFs
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents/*/edit
 // @grant        none

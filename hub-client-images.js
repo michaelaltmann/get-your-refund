@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Show Images on GetYourRefund
+// @name         Show Image Gallery on GetYourRefund Hub
 // @namespace    http://getyourrefund.org/
-// @version      0.2
+// @version      0.3
 // @description  Show images on document pages.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents
 // @grant        none

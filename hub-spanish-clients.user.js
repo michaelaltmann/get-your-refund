@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Flag client list on GetYourRefund
+// @name         Spanish clients on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.1
+// @version      0.2
 // @description  Show only clients marked as Spanish-speaking
 // @match        https://*.getyourrefund.org/en/hub/clients*
 // @grant        none
