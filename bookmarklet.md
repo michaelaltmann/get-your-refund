@@ -58,8 +58,8 @@ https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-do
 This bookmarklet flags in blue, those clients that most greeters will want to avoid because they fall into one of the following categories
 
 - Spanish speaking
-- Virtial VITA (the inbox icon)
-- Associated with a partner org that handling their own greeting.
+- Dropoff VITA (the inbox icon)
+- Associated with a partner org that is handling their own greeting.
 
 Drag the gray button below to your bookmarks bar. Then when you are on the
 list of clients, clck the bookmarks to flag those clients in blue.
@@ -77,6 +77,10 @@ https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-gr
 # Spanish Client Bookmarklet
 
 This bookmarklet shows only those clients that list Spanish as their language of choice.
+It also hides clients that are
+
+- dropoff VITA or
+- associated with a partner org that is handling their own greeting.
 
 Drag the gray button below to your bookmarks bar. Then when you are on the
 list of clients, clck the bookmarks to flag those clients in blue.
@@ -90,6 +94,8 @@ list of clients, clck the bookmarks to flag those clients in blue.
 You can also set up TamperMonkey to run this whenever you visit the client page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
+
+---
 
 ## Testing locally
 
