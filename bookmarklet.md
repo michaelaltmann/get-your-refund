@@ -83,7 +83,8 @@ It also hides clients that are
 - associated with a partner org that is handling their own greeting.
 
 Drag the gray button below to your bookmarks bar. Then when you are on the
-list of clients, clck the bookmarks to flag those clients in blue.
+list of clients, clck the bookmarks to show just Spanish clients available for
+greeters.
 
 <a class='button-link' href="javascript: (function() {
       var js = document.createElement('script');
