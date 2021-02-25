@@ -2,7 +2,7 @@
 // @name         Spanish clients on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.7
+// @version      0.8
 // @description  Show only clients marked as Spanish-speaking
 // @match        https://*.getyourrefund.org/en/hub/clients*
 // @grant        none
@@ -43,6 +43,8 @@ javascript: (function () {
             'Town of Stratford South End Community Center', 'Triangle Community Center',
             'United Way of Middlesex', 'United Way of Northwest Connecticut - Torrington',
             'University of Bridgeport', 'Waterbury Youth Services', 'Woodbridge Senior Center',
+            /* org */ 'Northland Free Tax Assistance',
+            'Northland Free Tax Assistance - Site',
             /* org */ 'United Way of Lancaster County (PA)',
             'UWL - Brightside', 'UWL - CASA', 'UWL - Ephrata', 'UWL - Etown College',
             'UWL - Etown CPOW', 'UWL - Factory', 'UWL - GYR virtual site', 'UWL - Hempfield',
