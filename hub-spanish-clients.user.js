@@ -2,7 +2,7 @@
 // @name         Spanish clients on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.8
+// @version      0.9
 // @description  Show only clients marked as Spanish-speaking
 // @match        https://*.getyourrefund.org/en/hub/clients*
 // @grant        none
@@ -65,13 +65,14 @@ javascript: (function () {
             /* org */ 'United Way of Kenosha County',
             'United Way of Kenosha County Site'
         ].map((s) => s.toLowerCase())
+
         var formTableDataRows = document.querySelectorAll("table.client-table > tbody > tr")
         formTableDataRows.forEach((row, index) => {
             var tds = row.querySelectorAll("td");
             var clientId = tds[1].innerText;
             var org = tds[2].innerText;
             var language = tds[3].innerText;
-            var returnListTd = tds[7];
+            var returnListTd = tds[tds.length - 1];
             var isVirtual = returnListTd.querySelectorAll('span.icon-move_to_inbox').length > 0;
             if (language.toLowerCase().trim() != 'spanish' || isVirtual || orgsToSkip.includes(org.toLowerCase())) {
                 row.classList.add('gyr-client-ignore')

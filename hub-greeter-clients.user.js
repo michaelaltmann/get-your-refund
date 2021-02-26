@@ -2,7 +2,7 @@
 // @name         Flag client list on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.8
+// @version      0.9
 // @description  Flag clients not of interest to English-only greeters
 // @match        https://*.getyourrefund.org/en/hub/clients*
 // @grant        none
@@ -71,7 +71,7 @@ javascript: (function () {
             var clientId = tds[1].innerText;
             var org = tds[2].innerText;
             var language = tds[3].innerText;
-            var returnListTd = tds[7];
+            var returnListTd = tds[tds.length - 1];
             var isVirtual = returnListTd.querySelectorAll('span.icon-move_to_inbox').length > 0;
             // console.log(`${clientId} ${org} ${language} ${isVirtual}`)
             if (language.toLowerCase().trim() === 'spanish' || isVirtual || orgsToSkip.includes(org.toLowerCase())) {
