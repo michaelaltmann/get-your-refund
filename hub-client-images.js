@@ -1,12 +1,26 @@
 // ==UserScript==
 // @name         Show Image Gallery on GetYourRefund Hub
 // @namespace    http://getyourrefund.org/
-// @version      0.5
+// @version      0.6
 // @description  Show images on document pages.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
+  function createViewer(viewUrl) {
+    var fileLinkButton = document.createElement("button");
+    fileLinkButton.className = 'gyr-file-link'
+
+    var fileLink = document.createElement("a");
+    fileLink.innerHTML = '&#x1f50e;';
+    fileLink.href = viewUrl;
+    fileLink.target = "_blank";
+    fileLink.rel = "noopener noreferrer"
+    fileLink.height = '100%'
+    fileLink.width = '100%'
+    fileLinkButton.appendChild(fileLink)
+    return fileLinkButton
+  }
   function createEditor(editUrl) {
     return () => {
       window.location.href = editUrl
@@ -23,6 +37,74 @@ javascript: (function () {
     return () => {
       img.style.transform = 'scaleX(-1) ' + img.style.transform;
     };
+  }
+  function getAuthToken() {
+    var elements = document.querySelectorAll("input[name='authenticity_token']")
+    if (elements.length > 0) {
+      return elements[0].value
+    } else {
+      return ''
+    }
+  }
+  function buildDocumentTypeSelector(docType) {
+    var options =
+      ['ID', 'Selfie', 'SSN or ITIN',
+        ['Employment', "Employment tax docs (W2's, 1099)"],
+        'Final Tax Document',
+        '1095-A',
+        '1098', '1098-E', '1098-T',
+        '1099-A', '1099-B', '1099-C', '1099-DIV', '1099-G', '1099-INT',
+        '1099-R', '1099-S', '1099-SA',
+        'RRB-1099', 'SSA-1099', 'Form 8879 (Unsigned)',
+        'Form 8879 (Signed)',
+        'IRA Statement',
+        'Prior Year Tax Return',
+        'Care Provider Statement',
+        'Property Tax Statement',
+        'Student Account Statement',
+        'W-2G', 'Other',
+        'Requested Later', 'Email attachment',
+        'Text message attachment',
+        'Original 13614-C',
+        'F13614C / F15080 2020',
+        'Consent Form 14446'
+      ]
+    return buildSelector(options, docType, 'document[document_type]')
+  }
+
+  function buildSelector(options, currentValue, name) {
+    var docTypeSelector = document.createElement('select')
+    docTypeSelector.className = 'select-element'
+    docTypeSelector.name = name
+
+    var docTypeSelected = false
+    options.forEach((option) => {
+      var opt = document.createElement('option')
+      var optionText, optionValue
+      if ('string' == (typeof option)) {
+        optionValue = option
+        optionText = option
+      } else {
+        optionValue = option[0]
+        optionText = option[1]
+      }
+      opt.value = optionValue
+      opt.innerText = optionText
+      if (currentValue == optionText) {
+        opt.selected = true
+        docTypeSelected = true
+      }
+      docTypeSelector.appendChild(opt)
+    })
+    if (!docTypeSelected) {
+      // docType wasn't on our list
+      var opt = document.createElement('option')
+      opt.value = currentValue
+      opt.innerText = currentValue
+      opt.selected = true
+      docTypeSelector.appendChild(opt)
+    }
+    return docTypeSelector
   }
 
   var pdfjslib;
@@ -72,6 +154,7 @@ javascript: (function () {
   st.innerHTML = `
   .gyr-card-container {
     width: 100%;
+    display: table;
   }
   .gyr-card {
     border: 1px solid;
@@ -79,7 +162,7 @@ javascript: (function () {
     display: inline-block;
     position: relative;
     vertical-align: bottom;
-    width: 30%;
+    width: 32%;
     padding: 2px;
     margin: 2px;
 }
@@ -93,14 +176,24 @@ javascript: (function () {
 .gyr-document-link {
   display: block
 }
+.gyr-file-name {
+  width: 80%
+}
 .gyr-tool {
   display: inline-block;
   float: right;
   height: 2em;
   margin: 1px;
 }
+.gyr-file-link {
+  display: inline-block;
+  float: right;
+  height: 2em;
+  margin: 1px;
+
+}
 .gyr-tool-container {
-  height: 2.5em;
+  height: 4.5em;
   width:100%;
   clear: both;
 }
@@ -140,6 +233,7 @@ javascript: (function () {
       var docTypeTd = tds[0];
       var fileTd = tds[1];
       var docType = docTypeTd.innerText;
+      var taxYear = tds[2].innerText;
       var link = fileTd.querySelector("a");
 
       var link_txt = link.innerText;
@@ -169,21 +263,60 @@ javascript: (function () {
 
         visible.style.transform = "";
 
-        var docTypeLabel = document.createElement("span");
-        docTypeLabel.className = 'gyr-document-type'
-        docTypeLabel.innerText = docType;
+        var fileLink = createViewer(link.href);
 
-        var fileLink = document.createElement("a");
-        fileLink.className = 'gyr-document-link'
-        fileLink.innerHTML = link_txt;
-        fileLink.href = link.href;
-        fileLink.target = "_blank";
-        fileLink.rel = "noppener noreferrer";
+        var editForm = document.createElement('form')
+        editForm.action = link.href
+        editForm.method = 'post'
+
+        var submitButton = document.createElement('button')
+        submitButton.innerText = "Save"
+        submitButton.disabled = true
+
+        var docTypeSelector = buildDocumentTypeSelector(docType);
+        docTypeSelector.onchange = function () {
+          submitButton.disabled = false
+        }
+
+        var nameField = document.createElement('input')
+        nameField.className = 'gyr-file-name'
+        nameField.name = 'document[display_name]'
+        nameField.value = link_txt
+        nameField.onkeypress = function () {
+          submitButton.disabled = false
+        }
+        editForm.onsubmit = function (ev) {
+          ev.preventDefault();
+          form = ev.target
+          console.log('Submitting in the bg to ' + editForm.action)
+          var xhr = new XMLHttpRequest();
+          xhr.open(form.method, form.action);
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              console.log('Submitted')
+              submitButton.disabled = true
+            }
+          }
+          xhr.send(new FormData(form))
+        }
+
+        editForm.appendChild(nameField)
+        editForm.appendChild(docTypeSelector)
+        editForm.appendChild(submitButton)
+        var patchField = document.createElement('input')
+        patchField.type = 'hidden'
+        patchField.name = '_method'
+        patchField.value = 'patch'
+        editForm.appendChild(patchField)
+        var authField = document.createElement('input')
+        authField.type = 'hidden'
+        authField.name = 'authenticity_token'
+        authField.value = getAuthToken();
+        editForm.appendChild(authField)
 
         var labels = document.createElement("span");
         labels.className = "gyr-document-labels";
-        labels.appendChild(docTypeLabel)
-        labels.appendChild(fileLink)
+        labels.appendChild(editForm)
         tool_container.appendChild(labels);
 
         var editButton = document.createElement("button");
@@ -206,6 +339,7 @@ javascript: (function () {
         flipButton.innerHTML = "&#8646;";
         flipButton.onclick = createFlipper(visible);
 
+        tool_container.appendChild(fileLink)
         tool_container.appendChild(flipButton);
         tool_container.appendChild(rotateButton);
         tool_container.appendChild(editButton);
