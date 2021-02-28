@@ -2,7 +2,7 @@
 // @name         Take Action on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.2
+// @version      0.3
 // @description  Adds a Send + Next  button that 
 //   sends the message, 
 //   resets the client status to Not Ready
@@ -58,16 +58,26 @@ javascript: (function () {
         }
     }
 
+    function submitForm(form, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                callback()
+            }
+        };
+        xhr.send(new FormData(form));
+    }
     // Set the status in the bg
-    function setStatus(status) {
+    function setStatus(status, callback) {
         var selects = document.getElementsByName('hub_take_action_form[status]')
         for (let select of selects) {
             select.value = status
+            if (select.form) submitForm(select.form, callback)
         }
     }
     function addFinishButton() {
         var commits = Array.from(document.getElementsByClassName('button'))
-        console.log(commits)
         for (let commit of commits) {
             if (commit.innerText == 'Send') {
                 var finish = document.createElement('button')
@@ -77,26 +87,30 @@ javascript: (function () {
                 finish.onclick = (ev) => {
                     ev.preventDefault();
                     var form = ev.target.form;
-                    console.log('Submitting in the bg to ' + form.action);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open(form.method, form.action);
-                    setStatus('intake_in_progress');
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4) {
-                            console.log('Submitted note and status');
+                    var callback = () => {
+                        // Clear messages since the have already be sent with status
+                        for (text of document.getElementsByName('hub_take_action_form[message_body]')) {
+                            console.log('Clearing message')
+                            text.value = ''
+                        }
+                        for (text of document.getElementsByName('hub_take_action_form[internal_note_body]')) {
+                            console.log('Clearing note')
+                            text.value = ''
+                        }
+                        setStatus('intake_in_progress', () => {
                             var nextUrl = localStorage.getItem(CLIENT_LIST_URL_KEY);
                             if (nextUrl) {
                                 window.location.href = nextUrl;
                             }
-                        }
-                    };
-                    xhr.send(new FormData(form));
-
-                }
+                        })
+                    }
+                    submitForm(form, callback)
+                };
                 commit.insertAdjacentElement('beforebegin', finish)
             }
         }
     }
+
 
     promptForConfiguration()
     addFinishButton()
