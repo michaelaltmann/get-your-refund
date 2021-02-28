@@ -2,12 +2,12 @@
 // @name         Take Action on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.3
+// @version      0.4
 // @description  Adds a Send + Next  button that 
 //   sends the message, 
 //   resets the client status to Not Ready
 //   returns to the client list.
-// @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*intake_info_requested
+// @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*intake_info_requested*
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
