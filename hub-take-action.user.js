@@ -2,11 +2,11 @@
 // @name         Take Action on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.4
+// @version      0.6
 // @description  Adds a Send + Next  button that 
 //   sends the message, 
 //   resets the client status to Not Ready
-//   returns to the client list.
+//   returns to the client list, if that has been configured.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*intake_info_requested*
 // @grant        none
 // ==/UserScript==
@@ -17,11 +17,15 @@ javascript: (function () {
         width: 100%;
         background-color: paleyellow
     }
+    .gyr-config-input {
+        width: 70%;
+        
+    }
     `
     document.getElementsByTagName('head')[0].appendChild(st);
     var CLIENT_LIST_URL_KEY = 'CLIENT_LIST_URL'
     var USER_KEY = 'USER'
-    var configKeys = [CLIENT_LIST_URL_KEY, USER_KEY]
+    var configKeys = [CLIENT_LIST_URL_KEY]
 
     function promptForConfiguration(key, force) {
         var configPanel = document.getElementById('configPanel')
@@ -36,6 +40,7 @@ javascript: (function () {
                 label.innerText = key
                 var input = document.createElement('input')
                 input.id = key
+                input.className = 'gyr-config-input'
                 input.value = localStorage.getItem(key)
                 configPanelRow.appendChild(label)
                 configPanelRow.appendChild(input)
@@ -99,9 +104,13 @@ javascript: (function () {
                         }
                         setStatus('intake_in_progress', () => {
                             var nextUrl = localStorage.getItem(CLIENT_LIST_URL_KEY);
-                            if (nextUrl) {
-                                window.location.href = nextUrl;
+                            if (!nextUrl) {
+                                nextUrl = window.location.href
+                                let i = nextUrl.indexOf('/edit_take_action')
+                                nextUrl = nextUrl.substring(0, i)
                             }
+                            window.location.href = nextUrl;
+
                         })
                     }
                     submitForm(form, callback)
