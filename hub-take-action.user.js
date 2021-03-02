@@ -2,13 +2,11 @@
 // @name         Take Action on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.2
-// @description  Adds a Send + Next  button that 
+// @version      0.7
+// @description  Adds a Send + Next button that 
 //   sends the message, 
-//   resets the client status to Not Ready
-//   returns to the client list.
-// @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*intake_info_requested
-// @grant        none
+//   returns to the client list, if that has been configured.
+// @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*
 // ==/UserScript==
 javascript: (function () {
     var st = document.createElement('style');
@@ -17,11 +15,15 @@ javascript: (function () {
         width: 100%;
         background-color: paleyellow
     }
+    .gyr-config-input {
+        width: 70%;
+        
+    }
     `
     document.getElementsByTagName('head')[0].appendChild(st);
     var CLIENT_LIST_URL_KEY = 'CLIENT_LIST_URL'
     var USER_KEY = 'USER'
-    var configKeys = [CLIENT_LIST_URL_KEY, USER_KEY]
+    var configKeys = [CLIENT_LIST_URL_KEY]
 
     function promptForConfiguration(key, force) {
         var configPanel = document.getElementById('configPanel')
@@ -36,6 +38,7 @@ javascript: (function () {
                 label.innerText = key
                 var input = document.createElement('input')
                 input.id = key
+                input.className = 'gyr-config-input'
                 input.value = localStorage.getItem(key)
                 configPanelRow.appendChild(label)
                 configPanelRow.appendChild(input)
@@ -50,7 +53,6 @@ javascript: (function () {
                     var value = input.value
                     localStorage.setItem(key, value)
                 }
-
                 configPanel.style.display = 'hidden'
             }
             configPanel.appendChild(ok)
@@ -58,16 +60,26 @@ javascript: (function () {
         }
     }
 
+    function submitForm(form, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                callback()
+            }
+        };
+        xhr.send(new FormData(form));
+    }
     // Set the status in the bg
-    function setStatus(status) {
+    function setStatus(status, callback) {
         var selects = document.getElementsByName('hub_take_action_form[status]')
         for (let select of selects) {
             select.value = status
+            if (select.form) submitForm(select.form, callback)
         }
     }
     function addFinishButton() {
         var commits = Array.from(document.getElementsByClassName('button'))
-        console.log(commits)
         for (let commit of commits) {
             if (commit.innerText == 'Send') {
                 var finish = document.createElement('button')
@@ -77,26 +89,23 @@ javascript: (function () {
                 finish.onclick = (ev) => {
                     ev.preventDefault();
                     var form = ev.target.form;
-                    console.log('Submitting in the bg to ' + form.action);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open(form.method, form.action);
-                    setStatus('intake_in_progress');
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4) {
-                            console.log('Submitted note and status');
-                            var nextUrl = localStorage.getItem(CLIENT_LIST_URL_KEY);
-                            if (nextUrl) {
-                                window.location.href = nextUrl;
-                            }
+                    var callback = () => {
+                        var nextUrl = localStorage.getItem(CLIENT_LIST_URL_KEY);
+                        if (!nextUrl) {
+                            // Go to the usual place, the client's overview
+                            nextUrl = window.location.href
+                            let i = nextUrl.indexOf('/edit_take_action')
+                            nextUrl = nextUrl.substring(0, i)
                         }
-                    };
-                    xhr.send(new FormData(form));
-
-                }
+                        window.location.href = nextUrl;
+                    }
+                    submitForm(form, callback)
+                };
                 commit.insertAdjacentElement('beforebegin', finish)
             }
         }
     }
+
 
     promptForConfiguration()
     addFinishButton()

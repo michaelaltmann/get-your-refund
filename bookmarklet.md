@@ -36,6 +36,31 @@ javascript: (function() {
 
 [See the code behind it on Github](https://github.com/michaelaltmann/get-your-refund).
 
+# Take Action Bookmarklet
+
+This bookmarklet modified the Take Action page. It adds a little configuration at the top of the page, whic you only need to use once. More importantly, it adds a `Send + Next` button. This button does three things with a single click
+
+- sends the message you have created
+- resets the client's status to 'Not Ready', which is the current protocol
+- takes you to whatever view of clients you have defined in the configuration text box at the top of the screen. For example, perhaps you like to pick up your clients from
+
+```
+https://www.getyourrefund.org/en/hub/clients?order=asc&column=updated_at&status=intake_in_progress&year=2020&unassigned=true&needs_response=true&vita_partner_id=&page=1
+```
+
+Drag the gray button below to your bookmarks bar. Then when you are on the
+Document Edit screen, clck the bookmark provide a preview of the image.
+
+<a class='button-link' href="javascript: (function() {
+      var js = document.createElement('script');
+      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-take-action.user.js');
+      document.body.appendChild(js);
+  })();">Take Action Send + Next</a>
+
+You can also set up TamperMonkey to run this whenever you visit the document edit page.
+Install TamperMonkey in your browser and then visit
+https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
+
 # Image Edit Preview Bookmarklet
 
 This bookmarklet modified the document edit page to add an image preview.
