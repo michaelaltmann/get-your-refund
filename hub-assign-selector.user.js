@@ -16,11 +16,11 @@ $('span.tax-return-list__assignee').each(function(_,assignDiv) {
         if (assignedTo === currentUser) {
             var unassignButton = $('<a>').text('Unassign').addClass('button button--small');
             unassignButton.click(function() {
-                $(this).siblings('a').trigger("click")
+                $(this).siblings('a')[0].click();
                 setTimeout(function() {
                     var select = $(assignDiv).find('select');
                     select.val(select.find('option:eq(0)').val());
-                    $(assignDiv).find('form').submit();
+                    $(assignDiv).find('button[type="submit"]')[0].click();
                 }, 200);
             });
             $(assignDiv).append(unassignButton);
@@ -30,11 +30,11 @@ $('span.tax-return-list__assignee').each(function(_,assignDiv) {
 
     var newButton = $('<a>').text('Assign to Me').addClass('button button--small')
     newButton.click(function() {
-        $(this).siblings('a').trigger("click")
+        $(this).siblings('a')[0].click();
         setTimeout(function() {
             var select = $(assignDiv).find('select');
             select.val(select.find(`option:contains("${currentUser}")`).val());
-            $(assignDiv).find('form').submit();
+            $(assignDiv).find('button[type="submit"]')[0].click();
         }, 200);
     });
     $(assignDiv).append(newButton);
