@@ -2,13 +2,11 @@
 // @name         Take Action on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.6
-// @description  Adds a Send + Next  button that 
+// @version      0.7
+// @description  Adds a Send + Next button that 
 //   sends the message, 
-//   resets the client status to Not Ready
 //   returns to the client list, if that has been configured.
-// @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*intake_info_requested*
-// @grant        none
+// @match        https://*.getyourrefund.org/en/hub/clients/*/edit_take_action*
 // ==/UserScript==
 javascript: (function () {
     var st = document.createElement('style');
@@ -55,7 +53,6 @@ javascript: (function () {
                     var value = input.value
                     localStorage.setItem(key, value)
                 }
-
                 configPanel.style.display = 'hidden'
             }
             configPanel.appendChild(ok)
@@ -93,25 +90,14 @@ javascript: (function () {
                     ev.preventDefault();
                     var form = ev.target.form;
                     var callback = () => {
-                        // Clear messages since the have already be sent with status
-                        for (text of document.getElementsByName('hub_take_action_form[message_body]')) {
-                            console.log('Clearing message')
-                            text.value = ''
+                        var nextUrl = localStorage.getItem(CLIENT_LIST_URL_KEY);
+                        if (!nextUrl) {
+                            // Go to the usual place, the client's overview
+                            nextUrl = window.location.href
+                            let i = nextUrl.indexOf('/edit_take_action')
+                            nextUrl = nextUrl.substring(0, i)
                         }
-                        for (text of document.getElementsByName('hub_take_action_form[internal_note_body]')) {
-                            console.log('Clearing note')
-                            text.value = ''
-                        }
-                        setStatus('intake_in_progress', () => {
-                            var nextUrl = localStorage.getItem(CLIENT_LIST_URL_KEY);
-                            if (!nextUrl) {
-                                nextUrl = window.location.href
-                                let i = nextUrl.indexOf('/edit_take_action')
-                                nextUrl = nextUrl.substring(0, i)
-                            }
-                            window.location.href = nextUrl;
-
-                        })
+                        window.location.href = nextUrl;
                     }
                     submitForm(form, callback)
                 };
