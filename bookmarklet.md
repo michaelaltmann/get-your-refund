@@ -121,6 +121,23 @@ You can also set up TamperMonkey to run this whenever you visit the client page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
 
+# Assign to Me Bookmarklet
+
+This bookmarklet adds a button to assign a client to yourself so you don't have to scroll through the list of assignees. It also moves you to the top of the assignee list and adds an unassign button if you are assigned.
+
+Drag the gray button below to your bookmarks bar. Then when you are on the
+list of clients, clck the bookmarks to add the assign button.
+
+<a class='button-link' href="javascript: (function() {
+      var js = document.createElement('script');
+      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-assign-selector.user.js');
+      document.body.appendChild(js);
+  })();">Assign Button on Hub</a>
+
+You can also set up TamperMonkey to run this whenever you visit the client page.
+Install TamperMonkey in your browser and then visit
+https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-assign-selector.user.js
+
 ---
 
 ## Testing locally
