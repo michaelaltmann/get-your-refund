@@ -19,6 +19,9 @@ You can also set up TamperMonkey to run this whenever you visit the client page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
 
+This animation shows how to do the installation
+<img src="gyr-hub-client-flagger-bookmarklet.gif"/>
+
 # Image Gallery Bookmarklet
 
 <style>
