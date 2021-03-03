@@ -44,10 +44,6 @@ To show images of documents uploaded to the hub, drag the gray button below into
     document.body.appendChild(js);
 })();">Images Gallery on GYR Hub</a>
 
-<img src="gyr-hub-client-images-bookmarklet.gif"/>
-
-(Above GIF by Diana Laster)
-
 For reference, this bookmarklet contains the code:
 
 ```
