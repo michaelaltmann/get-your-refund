@@ -1,3 +1,24 @@
+# Client Flagger Bookmarklet
+
+This bookmarklet flags in blue, those clients that most greeters will want to avoid because they fall into one of the following categories
+
+- Spanish speaking
+- Dropoff VITA (the inbox icon)
+- Associated with a partner org that is handling their own greeting.
+
+Drag the gray button below to your bookmarks bar. Then when you are on the
+list of clients, clck the bookmarks to flag those clients in blue.
+
+<a class='button-link' href="javascript: (function() {
+      var js = document.createElement('script');
+      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-greeter-clients.user.js');
+      document.body.appendChild(js);
+  })();">Flag Clients on GYR Hub</a>
+
+You can also set up TamperMonkey to run this whenever you visit the client page.
+Install TamperMonkey in your browser and then visit
+https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
+
 # Image Gallery Bookmarklet
 
 <style>
@@ -77,27 +98,6 @@ Document Edit screen, clck the bookmark provide a preview of the image.
 You can also set up TamperMonkey to run this whenever you visit the document edit page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-doc-edit.user.js
-
-# Client Flagger Bookmarklet
-
-This bookmarklet flags in blue, those clients that most greeters will want to avoid because they fall into one of the following categories
-
-- Spanish speaking
-- Dropoff VITA (the inbox icon)
-- Associated with a partner org that is handling their own greeting.
-
-Drag the gray button below to your bookmarks bar. Then when you are on the
-list of clients, clck the bookmarks to flag those clients in blue.
-
-<a class='button-link' href="javascript: (function() {
-      var js = document.createElement('script');
-      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/hub-greeter-clients.user.js');
-      document.body.appendChild(js);
-  })();">Flag Clients on GYR Hub</a>
-
-You can also set up TamperMonkey to run this whenever you visit the client page.
-Install TamperMonkey in your browser and then visit
-https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-greeter-clients.user.js
 
 # Spanish Client Bookmarklet
 
