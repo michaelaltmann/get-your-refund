@@ -2,11 +2,13 @@
 // @name         Spanish clients on GetYourRefund
 // @updateURL    https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-spanish-clients.user.js
 // @namespace    http://getyourrefund.org/
-// @version      0.10
+// @version      0.11
 // @description  Show only clients marked as Spanish-speaking
 // @match        https://*.getyourrefund.org/en/hub
 // @match        https://*.getyourrefund.org/en/hub/clients
 // @match        https://*.getyourrefund.org/en/hub/clients?*
+// @match        https://*.getyourrefund.org/en/hub/clients/sla-breaches?*
+
 // @grant        none
 // ==/UserScript==
 javascript: (function () {
