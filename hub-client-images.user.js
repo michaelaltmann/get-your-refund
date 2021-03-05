@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Show Image Gallery on GetYourRefund Hub
 // @namespace    http://getyourrefund.org/
-// @version      0.6
+// @version      0.7
 // @description  Show images on document pages.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents
 // @grant        none
@@ -226,7 +226,7 @@ javascript: (function () {
     container.id = "linked_images";
     container.className = "gyr-card-container";
     // Loop through all the rows in the table of Hub documents
-    var formTableDataRows = document.querySelectorAll("table.data-table > tbody > tr")
+    var formTableDataRows = document.querySelectorAll("table.index-table > tbody > tr")
     formTableDataRows.forEach((row, index) => {
       var tds = row.querySelectorAll("td");
       // Assume 0th column has docType and 1st has link to file
