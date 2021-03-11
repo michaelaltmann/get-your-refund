@@ -7,6 +7,7 @@
 // @grant        none
 // ==/UserScript==
 
+try {
 var currentUser = $('strong.user__name').text()
 
 $('span.tax-return-list__assignee').each(function(_,assignDiv) {
@@ -43,3 +44,9 @@ $('span.tax-return-list__assignee').each(function(_,assignDiv) {
 $(document).on('mousedown', 'select[name="assigned_user_id"]', function(){
     $(this).find(`option:contains("${currentUser}")`).insertBefore($(this).find('option:eq(1)'))
 });
+    
+// Avoid throwing errors so that other things, possibly bookmarklets, can work on the page
+} catch (err) {
+    // Do show the error to the developer, though
+    console.error( err );
+}  // ends try/catch
