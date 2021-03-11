@@ -65,14 +65,25 @@ javascript: (function () {
 
   // Change the count when the msgText field value changes
   var gyr_calc_num_messages = function ( event ) {
-    var num = event.target.value.length;
-    numCharsNode.innerText = num;
+    var msg_length = event.target.value.length;
+    numCharsNode.innerText = msg_length;
 
-    msg_length = 160;
-    if ( num > 160 ) {
-      msg_length = 147;
+    var max_length = 160;
+    if ( msg_length > 160 ) {
+      max_length = 147;
     }
-    numMsgsNode.innerText = `${Math.ceil(num / msg_length)} (${msg_length - (num % msg_length)} characters till next message)`
+    
+    // Characters left. Expected behavior:
+    // 159 chars written -> 1 char remaining
+    // 160 chars written -> 0 chars remaining
+    // 161 chars written -> 133 chars remaining
+    var left = max_length - (msg_length % max_length);
+    // If texter is at multiple of msg length, 0 characters are remaining. Except
+    // if the field is empty, in which case 160 characters are remaining.
+    if ( (msg_length % max_length) === 0 && msg_length !== 0 ) {
+      left = 0
+    }
+    numMsgsNode.innerText = `${Math.ceil(msg_length / max_length)} (${ left } characters till next message)`
   }
 
   var textarea = document.getElementById( 'outgoing_text_message_body' );
