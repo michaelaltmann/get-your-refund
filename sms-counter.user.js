@@ -25,11 +25,9 @@ javascript: (function () {
 
   // Otherwise add the message counter element to the page
   var gyrContainer = document.querySelector( '.text-message-form .form-group' );
-  console.log(`The text area on the messages screen is: ${ gyrContainer }`);
   if (gyrContainer === null) {
     // Could be on the "Take Action" page
     gyrContainer = document.querySelector( '#hub_take_action_form_message_body' ).parentElement;
-    console.log(`The text area on the Take Action screen is: ${ gyrContainer }`)
     // If this element isn't here either, we can't run this code on ths page
     if ( gyrContainer === null ) {
       return;
