@@ -58,7 +58,7 @@ javascript: (function() {
 
 # Take Action Bookmarklet
 
-This bookmarklet modified the Take Action page. It adds a little configuration at the top of the page, whic you only need to use once. More importantly, it adds a `Send + Next` button. This button does three things with a single click
+This bookmarklet modifies the Take Action page. It adds a little configuration at the top of the page, whic you only need to use once. More importantly, it adds a `Send + Next` button. This button does three things with a single click
 
 - sends the message you have created
 - resets the client's status to 'Not Ready', which is the current protocol
@@ -83,7 +83,7 @@ https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-ta
 
 # Image Edit Preview Bookmarklet
 
-This bookmarklet modified the document edit page to add an image preview.
+This bookmarklet modifies the document edit page to add an image preview.
 
 Drag the gray button below to your bookmarks bar. Then when you are on the
 Document Edit screen, clck the bookmark provide a preview of the image.
@@ -136,6 +136,26 @@ list of clients, clck the bookmarks to add the assign button.
 You can also set up TamperMonkey to run this whenever you visit the client page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-assign-selector.user.js
+
+---
+
+# SMS Counter Bookmarklet
+
+Phones split up messages into separate chunks. They charge per message. Some phones mix up the order in which the chunks appear.
+
+This bookmarklet lets you see an estimate of how many chunks - inidividual text messages (sms) - your words might send.
+
+Drag the gray button below to your bookmarks bar. Then when you are on the Take Action page or Messages page, tap the bookmarklet to see a count of your messages underneath the text field.
+
+<a class='button-link' href="javascript: (function() {
+      var js = document.createElement('script');
+      js.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/sms-counter.user.js');
+      document.body.appendChild(js);
+  })();">SMS Counter</a>
+
+You can also set up TamperMonkey to run this whenever you visit those pages.
+Install TamperMonkey in your browser and then visit
+https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/sms-counter.user.js
 
 ---
 
