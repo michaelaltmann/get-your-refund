@@ -7,7 +7,9 @@
 // @grant        none
 // ==/UserScript==
 
+// Log error instead of throwing it
 try {
+    
 var currentUser = $('strong.user__name').text()
 
 $('span.tax-return-list__assignee').each(function(_,assignDiv) {
