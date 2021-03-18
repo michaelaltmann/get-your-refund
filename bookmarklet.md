@@ -56,6 +56,7 @@ javascript: (function() {
 
 [See the code behind it on Github](https://github.com/michaelaltmann/get-your-refund).
 
+<!--
 # Take Action Bookmarklet
 
 This bookmarklet modifies the Take Action page. It adds a little configuration at the top of the page, whic you only need to use once. More importantly, it adds a `Send + Next` button. This button does three things with a single click
@@ -80,6 +81,7 @@ Document Edit screen, clck the bookmark provide a preview of the image.
 You can also set up TamperMonkey to run this whenever you visit the document edit page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-take-action.user.js
+-->
 
 # Image Edit Preview Bookmarklet
 
