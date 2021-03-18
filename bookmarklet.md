@@ -59,7 +59,7 @@ javascript: (function() {
 
 # Take Action Bookmarklet
 
-This bookmarklet modifies the Take Action page. It adds a little configuration at the top of the page, whic you only need to use once. More importantly, it adds a `Send + Next` button. This button does two things with a single click
+This bookmarklet modifies the Take Action page. It adds a little configuration at the top of the page, which you only need to use once. More importantly, it adds a `Send + Next` button. This button does two things with a single click
 
 - sends the message you have created
 - takes you to whatever view of clients you have defined in the configuration text box at the top of the screen. For example, perhaps you like to pick up your clients from
