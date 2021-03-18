@@ -56,13 +56,14 @@ javascript: (function() {
 
 [See the code behind it on Github](https://github.com/michaelaltmann/get-your-refund).
 
+
 # Take Action Bookmarklet
 
-This bookmarklet modifies the Take Action page. It adds a little configuration at the top of the page, whic you only need to use once. More importantly, it adds a `Send + Next` button. This button does three things with a single click
+This bookmarklet modifies the Take Action page. It adds a little configuration at the top of the page, which you only need to use once. More importantly, it adds a `Send + Next` button. This button does two things with a single click
 
 - sends the message you have created
-- resets the client's status to 'Not Ready', which is the current protocol
 - takes you to whatever view of clients you have defined in the configuration text box at the top of the screen. For example, perhaps you like to pick up your clients from
+<!-- - resets the client's status to 'Not Ready', which is the current protocol -->
 
 ```
 https://www.getyourrefund.org/en/hub/clients?order=asc&column=updated_at&status=intake_in_progress&year=2020&unassigned=true&needs_response=true&vita_partner_id=&page=1
