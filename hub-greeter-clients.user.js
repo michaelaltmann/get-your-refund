@@ -76,7 +76,7 @@ javascript: (function () {
             var org = tds[2].innerText;
             var language = tds[3].innerText;
             var returnListTd = tds[tds.length - 1];
-            var isVirtual = returnListTd.querySelectorAll('span.icon-move_to_inbox').length > 0;
+            var isVirtual = returnListTd.querySelectorAll('span.tooltip__trigger').length > 0;
             // console.log(`${clientId} ${org} ${language} ${isVirtual}`)
             if (language.toLowerCase().trim() === 'spanish' || isVirtual || orgsToSkip.includes(org.toLowerCase())) {
                 row.classList.add('gyr-client-ignore')
