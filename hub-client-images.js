@@ -194,12 +194,12 @@ javascript: (function () {
 }
 .gyr-tool-container {
   height: 4.5em;
-  width:100%;
+  width: 100%;
   clear: both;
 }
 .gyr-pdf {
   width: 100%;
-  height:500px
+  height: 600px
 }
 `
   document.getElementsByTagName('head')[0].appendChild(st);
