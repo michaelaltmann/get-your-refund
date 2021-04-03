@@ -241,7 +241,7 @@ javascript: (function () {
         if (/\.pdf$/i.test(link_txt)) {
           visible = document.createElement('embed')
           visible.type = 'application/pdf'
-          visible.src = link.href
+          visible.src = link.href + '#toolbar=0'
           visible.className = 'gyr-pdf'
           sub_container.appendChild(visible);
         } else {
