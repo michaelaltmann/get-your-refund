@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Show Image Gallery on GetYourRefund Hub
 // @namespace    http://getyourrefund.org/
-// @version      0.7
+// @version      0.8
 // @description  Show images on document pages.
 // @match        https://*.getyourrefund.org/en/hub/clients/*/documents
 // @grant        none
@@ -194,25 +194,16 @@ javascript: (function () {
 }
 .gyr-tool-container {
   height: 4.5em;
-  width:100%;
+  width: 100%;
   clear: both;
 }
-
+.gyr-pdf {
+  width: 100%;
+  height: 600px
+}
 `
   document.getElementsByTagName('head')[0].appendChild(st);
 
-  // Dynamically add PDF.js to the page
-  // This should create a global var pdfjsLib
-  var head = document.getElementsByTagName("head");
-  var fileref = head[0].appendChild(document.createElement("script"));
-  fileref.setAttribute("type", "text/javascript");
-  fileref.src = "https://mozilla.github.io/pdf.js/build/pdf.js";
-  fileref.onload = function () {
-    // The workerSrc property shall be specified.
-    pdfjsLib = window["pdfjs-dist/build/pdf"];
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
-  };
 
   var existing_container = document.getElementById("linked_images");
   if (existing_container) {
@@ -248,9 +239,11 @@ javascript: (function () {
         tool_container.className = 'gyr-tool-container';
         var visible = null;
         if (/\.pdf$/i.test(link_txt)) {
-          visible = document.createElement("canvas");
+          visible = document.createElement('embed')
+          visible.type = 'application/pdf'
+          visible.src = link.href + '#toolbar=0'
+          visible.className = 'gyr-pdf'
           sub_container.appendChild(visible);
-          setTimeout(() => loadPdf(link.href, visible), 1500);
         } else {
           visible = document.createElement("img");
           visible.style.width = "100%";
