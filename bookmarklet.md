@@ -126,7 +126,7 @@ https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-sp
 This bookmarklet adds a button to assign a client to yourself so you don't have to scroll through the list of assignees. It also moves you to the top of the assignee list and adds an unassign button if you are assigned.
 
 Drag the gray button below to your bookmarks bar. Then when you are on the
-list of clients, clck the bookmarks to add the assign button.
+list of clients, click the bookmarks to add the assign button.
 
 <a class='button-link' href="javascript: (function() {
       var js = document.createElement('script');
@@ -137,6 +137,23 @@ list of clients, clck the bookmarks to add the assign button.
 You can also set up TamperMonkey to run this whenever you visit the client page.
 Install TamperMonkey in your browser and then visit
 https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-assign-selector.user.js
+
+---
+
+# Squish
+
+On the 'clients' page, helps bring imporant info closer to the left side of the screen and turns a date into days since that date. [Feedback on useful arrangement of columns and data (or anything else)](https://github.com/michaelaltmann/get-your-refund/issues) appreciated.
+
+Drag the gray button below to your bookmarks bar. Then when you are on the
+list of clients, tap the bookmark to change the arrangement of the table.
+
+<a class='button-link' href="javascript: (function() {
+      var squish = document.createElement('script');
+      squish.setAttribute('src', 'https://michaelaltmann.github.io/get-your-refund/squish.user.js');
+      document.body.appendChild( squish );
+  })();">Squish client columns in the GYR Hub</a>
+
+Note: Number of days calculation will only work for dates in today's current year (whatever day today is).
 
 ---
 
