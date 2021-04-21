@@ -19,7 +19,7 @@
 
 // let business_days = require('moment-business-days');
 
-var add_at_a_glance = function () {
+var squish = function () {
 
   // // Prevent stuff from being added multiple times (implement after development)
   // if ( document.querySelector('.org_subtitle')  ) { return; }
@@ -189,11 +189,11 @@ min-height: unset;
   `;
   document.getElementsByTagName('head')[0].appendChild(css);
 
-};  // Ends add_at_a_glance()
+};  // Ends squish()
 
 
 try {
-  add_at_a_glance();
+  squish();
 } catch ( err ) {
   console.log( '"At-a-glance" bookmarklet ran into an error.' );
   console.error( err );
