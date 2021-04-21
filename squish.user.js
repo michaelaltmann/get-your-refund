@@ -111,17 +111,37 @@ var squish = function () {
       created_days = Math.round(( today - date) / one_day_ms);
     }
 
-    let updated_cell = cols[ updated_index ];
-    let waiting_cell = cols[ waiting_index ];
-    let created_cell = cols[ created_index ];
+    let with_tooltip = function ( text, tip ) {
+      // Create a container with a visible element and a tootlip element
+      return `
+      <span class="bookmarklet tooltip">
+        <span class="tooltip__trigger" title="" tabindex="0">${ text }</span>
+        <span class="tooltip__body tooltip__body--bottom"  role="tooltip" aria-hidden="true" style="margin-left: 11.5px; margin-top: 24px;">${ tip }</span>
+      </span>`;
+    }
 
-    updated_cell.innerHTML = updated_days + ' days';
-    waiting_cell.innerHTML = waiting_days + ' days';
-    created_cell.innerHTML = created_days + ' days';
+    cols[ updated_index ].innerHTML = with_tooltip( updated_days + ' days', `Includes weekends</br>${ updated_text }` );
+    cols[ waiting_index ].innerHTML = with_tooltip( waiting_days + ' days', `Includes weekends</br>${ waiting_text }` );
+    cols[ created_index ].innerHTML = with_tooltip( created_days + ' days', `Includes weekends</br>${ created_text }` );
 
-    updated_cell.title = updated_text;
-    waiting_cell.title = waiting_text;
-    created_cell.title = created_text;
+    // Show the tooltip with extra info if appropriate
+    document.body.addEventListener('mouseover', function( event ) {
+      let target = event.target;
+      if ( (' ' + target.className + ' ').indexOf(' ' + 'tooltip__trigger' + ' ') > -1 ) {
+        let tip = target.parentNode.querySelector('.tooltip__body');
+        tip.setAttribute( 'aria-hidden', 'false' );
+        tip.classList.add( 'visible' );
+      }
+    })
+    // Hide tooltip if needed
+    document.body.addEventListener('mouseout', function( event ) {
+      let target = event.target;
+      if ( (' ' + target.className + ' ').indexOf(' ' + 'tooltip__trigger' + ' ') > -1 ) {
+        let tip = target.parentNode.querySelector('.tooltip__body');
+        tip.setAttribute( 'aria-hidden', 'true' );
+        tip.classList.remove( 'visible' );
+      }
+    })
   
 
     // // Show some status items closer to the name column
@@ -171,8 +191,6 @@ var squish = function () {
   }
 
 
-
-
   var css = document.createElement('style');
   css.innerHTML = `
 td.index-table__cell,
@@ -186,6 +204,16 @@ min-height: unset;
 .bookmarklet_org_subtitle {
   font-weight: 400;
 }
+.tax-return-list__certification {
+  margin-right: 0;
+}
+.bookmarklet .tooltip__body {
+  display: none;
+}
+.bookmarklet .tooltip__body.visible {
+  display: block;
+  opacity: 1;
+}
   `;
   document.getElementsByTagName('head')[0].appendChild(css);
 
@@ -195,6 +223,6 @@ min-height: unset;
 try {
   squish();
 } catch ( err ) {
-  console.log( '"At-a-glance" bookmarklet ran into an error.' );
+  console.log( '"Squish" bookmarklet ran into an error.' );
   console.error( err );
 }
