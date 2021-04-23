@@ -45,6 +45,7 @@ var squish = function () {
   let name_header_index = 1;
   let id_index = 2;
   let org_header_index = 3;
+  let lang_header_index = 4;
   let updated_index = 6;
   let waiting_index = 7;
   let created_index = 8;
@@ -53,21 +54,18 @@ var squish = function () {
     if ( text === 'Name' ) { name_header_index = header_i; }
     if ( text === 'Client ID' ) { id_index = header_i; }
     if ( text === 'Organization' ) { org_header_index = header_i; }
-    if ( text === 'Updated At' ) {
-      updated_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Volunteer<br>Message';
-    }
+    if ( text === 'Language' ) { lang_header_index = header_i; }
+    // Don't change wording of headings right now. The current headings
+    //  are in the documentation.
+    if ( text === 'Updated At' ) { updated_index = header_i; }
     if ( text === 'Waiting on response' ) {
       waiting_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Filer<br>Response';
+      column_headers[ header_i ].querySelector('span').innerHTML = 'Waiting on<br>response';  // Less wide
     }
-    if ( text === 'Created at' ) {
-      created_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Created';
-    }
+    if ( text === 'Created at' ) { created_index = header_i; }
   }
 
-  let all_rows_data = [];
+  let new_info_data = [];
 
   let info_rows = document.querySelectorAll('table.client-table tbody tr');
   for ( let row of info_rows ) {
@@ -89,7 +87,7 @@ var squish = function () {
     name_node.appendChild( id_container );
     name_cell.appendChild( name_subtitle_container );
 
-    // Get dates in different columns
+    // Change dates to days, but keep date data around in a tooltip
     let updated_days = '-';
     let waiting_days = '-';
     let created_days = '-';
@@ -143,6 +141,29 @@ var squish = function () {
       }
     })
   
+    // Add info from tax year columns
+
+    // Prepare the new cell
+    let tax_year_cell = document.createElement('td');
+    tax_year_cell.className = 'index-table__cell';
+    let tax_year_list = document.createElement('ol');  // `ul` in original, but why did they do an unordered list when the order does matter?
+    tax_year_list.className = 'tax-return-list';
+    tax_year_cell.appendChild( tax_year_list );
+
+    // Add the contents of each year's list item
+    let tax_year_rows_curr = row.querySelectorAll('.tax-return-list li');
+    for ( let year_li_curr of tax_year_rows_curr ) {
+      let li = document.createElement('li');
+      li.className = year_li_curr.className;  // get the right tax return id
+
+      let status_new = document.createElement('div');
+      let status_node = year_li_curr.querySelector('.tax-return-list__status');
+      status_new.innerHTML = status_node.outerHTML;
+      status_new.className = status_node.className;
+
+      li.appendChild( status_new );
+      tax_year_list.appendChild( li );
+    }
 
     // // Show some status items closer to the name column
     // let per_year = row.querySelectorAll('.tax-return-list li');
@@ -162,24 +183,28 @@ var squish = function () {
     // }
 
 
-    // // Alternative data structure. Thoughts for refactoring.
-    // let row_data = {
-    //   row,
-    //   id: id_container,
-    //   org: name_subtitle_container,
-    //   // years: years_data,
-    //   // years_cell: years_cell,
-    // }
-    // all_rows_data.push( row_data );
+    // Alternative data structure. Thoughts for refactoring.
+    let row_data = {
+      row,
+      id: id_container,
+      org: name_subtitle_container,
+      years: tax_year_cell,
+    }
+    new_info_data.push( row_data );
 
-  }
+  }  // ends for every non-header row
 
   let all_rows = document.querySelectorAll('table.client-table tr');
+
+  // Move the low-priority columns to the end first
   for ( let row of all_rows ) {
-    // Move columns out of view
     let cols = row.querySelectorAll(':scope > *');
     let id_cell = cols[ id_index ];
     let org_cell = cols[ org_header_index ];
+    let lang_cell = cols[ lang_header_index ];
+    let created_cell = cols[ created_index ];
+
+    created_cell.parentNode.insertBefore( lang_cell, created_cell.nextSibling );
     row.appendChild( id_cell );
     row.appendChild( org_cell );
 
@@ -190,6 +215,48 @@ var squish = function () {
     // name_cell.parentNode.insertBefore( new_status_col, name_cell.nextSibling );
   }
 
+  // Now that the order of old columns is all set,
+  // add new column with its own header 
+  let new_years_header = document.createElement('th');
+  new_years_header.className = 'bookmarklet_tax_year_col index-table__header';
+  new_years_header.setAttribute( 'scope', 'col' );
+  new_years_header.innerText = 'Tax years info';
+
+  let header_row = all_rows[0];
+  let cols = header_row.querySelectorAll(':scope > *');
+  let name_header_cell = cols[ name_header_index ];
+  name_header_cell.parentNode.insertBefore( new_years_header, name_header_cell.nextSibling );
+
+
+  // Add new info cells
+  for ( let row_data of new_info_data ) {
+    let cols = row_data.row.querySelectorAll(':scope > *');
+
+    // Add status, year, and assignee data
+    let name_cell = cols[ name_header_index ];
+    name_cell.parentNode.insertBefore( row_data.years, name_cell.nextSibling );
+  }
+
+  // for ( let row_i = 0; row_i < all_rows.length; row_i++; ) {
+  //   let row = all_rows[ row_i ];
+  //   let year_row = 
+
+  //   // Add new tax years column
+  //   let cols = row.querySelectorAll(':scope > *');
+  //   let name_cell = cols[ name_header_index ];
+
+
+  //   if ( all_rows.indexOf( row ) === 0 ) {
+  //   } else {
+  //     name_cell.parentNode.insertBefore( new_years_header, name_cell.nextSibling );
+  //   }
+
+  //   // // Add new column for status data
+  //   // let new_status_col = document.createElement('td');
+  //   // new_status_col.className = 'bookmarklet_status_col';
+  //   // let name_cell = cols[ name_header_index ];
+  //   // name_cell.parentNode.insertBefore( new_status_col, name_cell.nextSibling );
+  // }
 
   var css = document.createElement('style');
   css.innerHTML = `
