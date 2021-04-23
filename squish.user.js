@@ -46,6 +46,7 @@ var squish = function () {
   let id_index = 2;
   let org_header_index = 3;
   let lang_header_index = 4;
+  let unemployment_index = 5;
   let updated_index = 6;
   let waiting_index = 7;
   let created_index = 8;
@@ -55,6 +56,7 @@ var squish = function () {
     if ( text === 'Client ID' ) { id_index = header_i; }
     if ( text === 'Organization' ) { org_header_index = header_i; }
     if ( text === 'Language' ) { lang_header_index = header_i; }
+    if ( text === 'UI' ) { unemployment_index = header_i; }
     // Don't change wording of headings right now. The current headings
     //  are in the documentation.
     if ( text === 'Updated At' ) { updated_index = header_i; }
@@ -201,11 +203,13 @@ var squish = function () {
     let cols = row.querySelectorAll(':scope > *');
     let id_cell = cols[ id_index ];
     let org_cell = cols[ org_header_index ];
+    let unemployment_cell = cols[ unemployment_index ];
     let lang_cell = cols[ lang_header_index ];
     let created_cell = cols[ created_index ];
 
     created_cell.parentNode.insertBefore( lang_cell, created_cell.nextSibling );
     row.appendChild( id_cell );
+    row.appendChild( unemployment_cell );
     row.appendChild( org_cell );
 
     // // Add new column for status data
