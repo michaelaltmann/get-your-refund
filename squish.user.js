@@ -45,6 +45,8 @@ var squish = function () {
   let name_header_index = 1;
   let id_index = 2;
   let org_header_index = 3;
+  let lang_header_index = 4;
+  let unemployment_index = 5;
   let updated_index = 6;
   let waiting_index = 7;
   let created_index = 8;
@@ -53,21 +55,22 @@ var squish = function () {
     if ( text === 'Name' ) { name_header_index = header_i; }
     if ( text === 'Client ID' ) { id_index = header_i; }
     if ( text === 'Organization' ) { org_header_index = header_i; }
+    if ( text === 'Language' ) { lang_header_index = header_i; }
+    if ( text === 'UI' ) { unemployment_index = header_i; }
+    // Don't change wording of headings right now. The current headings
+    //  are in the documentation. Just decrease width
     if ( text === 'Updated At' ) {
       updated_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Volunteer<br>Message';
+      column_headers[ header_i ].querySelector('span').innerHTML = 'Updated<br>at';
     }
     if ( text === 'Waiting on response' ) {
       waiting_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Filer<br>Response';
+      column_headers[ header_i ].querySelector('span').innerHTML = 'Waiting on<br>response';
     }
-    if ( text === 'Created at' ) {
-      created_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Created';
-    }
+    if ( text === 'Created at' ) { created_index = header_i; }
   }
 
-  let all_rows_data = [];
+  let new_info_data = [];
 
   let info_rows = document.querySelectorAll('table.client-table tbody tr');
   for ( let row of info_rows ) {
@@ -76,7 +79,7 @@ var squish = function () {
 
     let client_id = cols[ id_index ].innerText;
     let id_container = document.createElement('span');
-    id_container.class = 'name_id_info';
+    id_container.className = 'bookmarklet name_id_info';
     id_container.innerHTML = `(${ client_id })`
 
     let org_name = cols[ org_header_index ].innerText;
@@ -86,10 +89,10 @@ var squish = function () {
     
     let name_cell = cols[ name_header_index ];
     let name_node = name_cell.querySelectorAll( 'a' )[0];
-    name_node.appendChild( id_container );
+    name_node.parentNode.insertBefore( id_container, name_node.nextSibling );
     name_cell.appendChild( name_subtitle_container );
 
-    // Get dates in different columns
+    // Change dates to days, but keep date data around in a tooltip
     let updated_days = '-';
     let waiting_days = '-';
     let created_days = '-';
@@ -143,53 +146,95 @@ var squish = function () {
       }
     })
   
+    // Add info from tax year columns
 
-    // // Show some status items closer to the name column
-    // let per_year = row.querySelectorAll('.tax-return-list li');
-    // let years_data = [];
-    // let years_cell = document.createElement('td');
-    // let years_list = document.createElement('ul');
-    // years_cell.appendChild( years_list );
-    // for ( let year_row of per_year ) {
-    //   let item = document.createElement('li');
-    //   let year_text = year_row.querySelector( '.tax-return-list__year' ).innerText;
-    //   let assignee = year_row.querySelector( '.tax-return-list__assignee' );
-    //   let status = year_row.querySelector( '.tax-return-list__status' );
-    //   item.innerHTML = `<span class="bookmarklet_tax_year">${ year_text }</span>`;
-    //   item.appendChild( assignee );
-    //   item.appendChild( status );
-    //   years_data.push({ item, year: year_text, assignee, status });
-    // }
+    // Prepare the new cell
+    let tax_year_cell = document.createElement('td');
+    tax_year_cell.className = 'index-table__cell bookmarklet';
+    let tax_year_list = document.createElement('ol');  // `ul` in original, but why did they do an unordered list when the order does matter?
+    tax_year_list.className = 'tax-return-list';
+    tax_year_cell.appendChild( tax_year_list );
 
+    // Add the contents of each year's list item
+    let tax_year_rows_curr = row.querySelectorAll('.tax-return-list li');
+    for ( let year_li_curr of tax_year_rows_curr ) {
+      let li = document.createElement('li');
+      li.id = year_li_curr.id;  // get the right tax return id
+      li.className = 'bookmarklet';
+      tax_year_list.appendChild( li );
 
-    // // Alternative data structure. Thoughts for refactoring.
-    // let row_data = {
-    //   row,
-    //   id: id_container,
-    //   org: name_subtitle_container,
-    //   // years: years_data,
-    //   // years_cell: years_cell,
-    // }
-    // all_rows_data.push( row_data );
+      // Copy year. Note: Feedback said to add year to the assignee. i.e.
+      // an [Assign tax year 2020] button, but when trying to implement, that didn't make
+      // as much sense. Status would not have year next to it and
+      // 'Jen Smith tax year 2020' doesn't make as much sense as 'Assign tax year 2020'
+      let year_new = document.createElement('div');
+      let year_curr = year_li_curr.querySelector('.tax-return-list__year');
+      year_new.innerHTML = year_curr.outerHTML;
+      li.appendChild( year_new );
 
-  }
+      // Copy status
+      let status_new = document.createElement('div');
+      let status_node = year_li_curr.querySelector('.tax-return-list__status');
+      status_new.innerHTML = status_node.outerHTML;
+      status_new.className = status_node.className;
+      li.appendChild( status_new );
+
+      // Move assignment node (with year copied)
+      // Made to integrate with 'hub-assign-selector' bookmarklet
+      // TODO: If we need the 'drop off' icon, we can just copy all of '.tax-return-list__assignment'
+      let assignee_cell = year_li_curr.querySelector('.tax-return-list__assignee');
+      li.appendChild( assignee_cell );
+
+    }
+
+    // Alternative data structure. Thoughts for refactoring.
+    let row_data = {
+      row,
+      id: id_container,
+      org: name_subtitle_container,
+      years: tax_year_cell,
+    }
+    new_info_data.push( row_data );
+
+  }  // ends for every non-header row
 
   let all_rows = document.querySelectorAll('table.client-table tr');
+
+  // Move the low-priority columns to the end first
   for ( let row of all_rows ) {
-    // Move columns out of view
     let cols = row.querySelectorAll(':scope > *');
     let id_cell = cols[ id_index ];
     let org_cell = cols[ org_header_index ];
-    row.appendChild( id_cell );
-    row.appendChild( org_cell );
+    let unemployment_cell = cols[ unemployment_index ];
+    let lang_cell = cols[ lang_header_index ];
+    let created_cell = cols[ created_index ];
 
-    // // Add new column for status data
-    // let new_status_col = document.createElement('td');
-    // new_status_col.className = 'bookmarklet_status_col';
-    // let name_cell = cols[ name_header_index ];
-    // name_cell.parentNode.insertBefore( new_status_col, name_cell.nextSibling );
+    created_cell.parentNode.insertBefore( lang_cell, created_cell.nextSibling );
+    row.appendChild( id_cell );
+    row.appendChild( unemployment_cell );
+    row.appendChild( org_cell );
   }
 
+  // Now that the order of old columns is all set,
+  // add new column with its own header 
+  let new_years_header = document.createElement('th');
+  new_years_header.className = 'bookmarklet_tax_year_col index-table__header';
+  new_years_header.setAttribute( 'scope', 'col' );
+  new_years_header.innerText = 'Tax years info';
+
+  let header_row = all_rows[0];
+  let cols = header_row.querySelectorAll(':scope > *');
+  let name_header_cell = cols[ name_header_index ];
+  name_header_cell.parentNode.insertBefore( new_years_header, name_header_cell.nextSibling );
+
+  // Add new info cells
+  for ( let row_data of new_info_data ) {
+    let cols = row_data.row.querySelectorAll(':scope > *');
+
+    // Add status, year, and assignee data
+    let name_cell = cols[ name_header_index ];
+    name_cell.parentNode.insertBefore( row_data.years, name_cell.nextSibling );
+  }
 
   var css = document.createElement('style');
   css.innerHTML = `
@@ -198,10 +243,14 @@ th.index-table__header,
 .index-table__row-header {
 padding: 0 0.5em;
 }
+.honeycrisp-compact .label {
+    padding: 0.3rem 0.3rem;
+}
 .tax-return-list__assignment {
 min-height: unset;
 }
-.bookmarklet_org_subtitle {
+.bookmarklet_org_subtitle,
+.bookmarklet.name_id_info {
   font-weight: 400;
 }
 .tax-return-list__certification {
@@ -213,6 +262,13 @@ min-height: unset;
 .bookmarklet .tooltip__body.visible {
   display: block;
   opacity: 1;
+}
+.bookmarklet .tax-return-list__status {
+  margin-right: 0.5em;
+}
+.bookmarklet .tax-return-list__assignee {
+  width: unset;
+  flex-shrink: 1;
 }
   `;
   document.getElementsByTagName('head')[0].appendChild(css);

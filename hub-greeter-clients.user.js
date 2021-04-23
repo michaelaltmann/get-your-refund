@@ -69,16 +69,34 @@ javascript: (function () {
             /* org */ 'United Way of Kenosha County',
             'United Way of Kenosha County Site'
         ].map((s) => s.toLowerCase())
+
+        // Get correct indexes for relevant columns based on header text
+        let header_cells = document.querySelectorAll('.client-table thead th');
+        var id_index = 1;
+        var org_index = 2;
+        var lang_index = 3;
+        var returnList_index = header_cells.length - 1;
+        for ( let cell_i = 0; cell_i < header_cells.length; cell_i++ ) {
+            let text = header_cells[ cell_i ].innerText.toLowerCase().trim();
+            if ( text === 'client id' ) { id_index = cell_i; }
+            else if ( text === 'organization' ) { org_index = cell_i; }
+            else if ( text === 'language' ) { lang_index = cell_i; }
+            // Another bookmarklet may make this incorrect if user feedback
+            // changes, but we'll try to deal with it then
+            else if ( text.includes( 'certification' ) ) { returnList_index = cell_i; }
+        }
+
         var formTableDataRows = document.querySelectorAll("table.client-table > tbody > tr")
         formTableDataRows.forEach((row, index) => {
-            var tds = row.querySelectorAll("td");
-            var clientId = tds[1].innerText;
-            var org = tds[2].innerText;
-            var language = tds[3].innerText;
-            var returnListTd = tds[tds.length - 1];
-            var isVirtual = returnListTd.querySelectorAll('span.tooltip__trigger').length > 0;
-            // console.log(`${clientId} ${org} ${language} ${isVirtual}`)
-            if (language.toLowerCase().trim() === 'spanish' || isVirtual || orgsToSkip.includes(org.toLowerCase())) {
+            var tds = row.querySelectorAll(":scope > *");  // includes all columns (name is <th>)
+            var clientId = tds[ id_index ].innerText;
+            var org = tds[ org_index ].innerText;
+            var language = tds[ lang_index ].innerText;
+            var returnListTd = tds[ returnList_index ];
+            // non-virtual clients should be marked too
+            var isInPerson = returnListTd.querySelectorAll('span.tooltip__trigger').length > 0;
+            // console.log(`${clientId} ${org} ${language} ${isInPerson}`)
+            if (language.toLowerCase().trim() !== 'english' || isInPerson || orgsToSkip.includes(org.toLowerCase())) {
                 row.classList.add('gyr-client-ignore')
             }
         }
