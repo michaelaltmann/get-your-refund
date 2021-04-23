@@ -58,11 +58,14 @@ var squish = function () {
     if ( text === 'Language' ) { lang_header_index = header_i; }
     if ( text === 'UI' ) { unemployment_index = header_i; }
     // Don't change wording of headings right now. The current headings
-    //  are in the documentation.
-    if ( text === 'Updated At' ) { updated_index = header_i; }
+    //  are in the documentation. Just decrease width
+    if ( text === 'Updated At' ) {
+      updated_index = header_i;
+      column_headers[ header_i ].querySelector('span').innerHTML = 'Updated<br>at';
+    }
     if ( text === 'Waiting on response' ) {
       waiting_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Waiting on<br>response';  // Less wide
+      column_headers[ header_i ].querySelector('span').innerHTML = 'Waiting on<br>response';
     }
     if ( text === 'Created at' ) { created_index = header_i; }
   }
@@ -156,15 +159,31 @@ var squish = function () {
     let tax_year_rows_curr = row.querySelectorAll('.tax-return-list li');
     for ( let year_li_curr of tax_year_rows_curr ) {
       let li = document.createElement('li');
-      li.className = year_li_curr.className;  // get the right tax return id
+      li.className = year_li_curr.className + 'bookmarklet';  // get the right tax return id
+      tax_year_list.appendChild( li );
 
+      // Copy year. Note: Feedback said to add year to the assignee. i.e.
+      // an [Assign tax year 2020] button, but when trying to implement, that didn't make
+      // as much sense. Status would not have year next to it and
+      // 'Jen Smith tax year 2020' doesn't make as much sense as 'Assign tax year 2020'
+      let year_new = document.createElement('div');
+      let year_curr = year_li_curr.querySelector('.tax-return-list__year');
+      year_new.innerHTML = year_curr.outerHTML;
+      li.appendChild( year_new );
+
+      // Copy status
       let status_new = document.createElement('div');
       let status_node = year_li_curr.querySelector('.tax-return-list__status');
       status_new.innerHTML = status_node.outerHTML;
       status_new.className = status_node.className;
-
       li.appendChild( status_new );
-      tax_year_list.appendChild( li );
+
+      // Move assignment node (with year copied)
+      // Made to integrate with 'hub-assign-selector' bookmarklet
+      // TODO: If we need the 'drop off' icon, we can just copy all of '.tax-return-list__assignment'
+      let assignee_cell = year_li_curr.querySelector('.tax-return-list__assignee');
+      li.appendChild( assignee_cell );
+
     }
 
     // // Show some status items closer to the name column
@@ -256,6 +275,12 @@ min-height: unset;
 .bookmarklet .tooltip__body.visible {
   display: block;
   opacity: 1;
+}
+.bookmarklet .tax-return-list__status {
+  margin-right: 0.5em;
+}
+.bookmarklet .tax-return-list__assignee {
+  width: unset;
 }
   `;
   document.getElementsByTagName('head')[0].appendChild(css);
