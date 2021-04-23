@@ -186,24 +186,6 @@ var squish = function () {
 
     }
 
-    // // Show some status items closer to the name column
-    // let per_year = row.querySelectorAll('.tax-return-list li');
-    // let years_data = [];
-    // let years_cell = document.createElement('td');
-    // let years_list = document.createElement('ul');
-    // years_cell.appendChild( years_list );
-    // for ( let year_row of per_year ) {
-    //   let item = document.createElement('li');
-    //   let year_text = year_row.querySelector( '.tax-return-list__year' ).innerText;
-    //   let assignee = year_row.querySelector( '.tax-return-list__assignee' );
-    //   let status = year_row.querySelector( '.tax-return-list__status' );
-    //   item.innerHTML = `<span class="bookmarklet_tax_year">${ year_text }</span>`;
-    //   item.appendChild( assignee );
-    //   item.appendChild( status );
-    //   years_data.push({ item, year: year_text, assignee, status });
-    // }
-
-
     // Alternative data structure. Thoughts for refactoring.
     let row_data = {
       row,
@@ -259,6 +241,9 @@ td.index-table__cell,
 th.index-table__header,
 .index-table__row-header {
 padding: 0 0.5em;
+}
+.honeycrisp-compact .label {
+    padding: 0.3rem 0.3rem;
 }
 .tax-return-list__assignment {
 min-height: unset;
