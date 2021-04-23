@@ -144,6 +144,8 @@ https://raw.githubusercontent.com/michaelaltmann/get-your-refund/gh-pages/hub-as
 
 On the 'clients' page, helps bring imporant info closer to the left side of the screen and turns a date into days since that date. [Feedback on useful arrangement of columns and data (or anything else)](https://github.com/michaelaltmann/get-your-refund/issues) appreciated.
 
+<img src="squish_the_hub.gif" height="250"/>
+
 Drag the gray button below to your bookmarks bar. Then when you are on the
 list of clients, tap the bookmark to change the arrangement of the table.
 
