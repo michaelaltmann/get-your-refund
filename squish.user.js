@@ -211,12 +211,6 @@ var squish = function () {
     row.appendChild( id_cell );
     row.appendChild( unemployment_cell );
     row.appendChild( org_cell );
-
-    // // Add new column for status data
-    // let new_status_col = document.createElement('td');
-    // new_status_col.className = 'bookmarklet_status_col';
-    // let name_cell = cols[ name_header_index ];
-    // name_cell.parentNode.insertBefore( new_status_col, name_cell.nextSibling );
   }
 
   // Now that the order of old columns is all set,
@@ -231,7 +225,6 @@ var squish = function () {
   let name_header_cell = cols[ name_header_index ];
   name_header_cell.parentNode.insertBefore( new_years_header, name_header_cell.nextSibling );
 
-
   // Add new info cells
   for ( let row_data of new_info_data ) {
     let cols = row_data.row.querySelectorAll(':scope > *');
@@ -240,27 +233,6 @@ var squish = function () {
     let name_cell = cols[ name_header_index ];
     name_cell.parentNode.insertBefore( row_data.years, name_cell.nextSibling );
   }
-
-  // for ( let row_i = 0; row_i < all_rows.length; row_i++; ) {
-  //   let row = all_rows[ row_i ];
-  //   let year_row = 
-
-  //   // Add new tax years column
-  //   let cols = row.querySelectorAll(':scope > *');
-  //   let name_cell = cols[ name_header_index ];
-
-
-  //   if ( all_rows.indexOf( row ) === 0 ) {
-  //   } else {
-  //     name_cell.parentNode.insertBefore( new_years_header, name_cell.nextSibling );
-  //   }
-
-  //   // // Add new column for status data
-  //   // let new_status_col = document.createElement('td');
-  //   // new_status_col.className = 'bookmarklet_status_col';
-  //   // let name_cell = cols[ name_header_index ];
-  //   // name_cell.parentNode.insertBefore( new_status_col, name_cell.nextSibling );
-  // }
 
   var css = document.createElement('style');
   css.innerHTML = `
