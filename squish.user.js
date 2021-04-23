@@ -79,7 +79,7 @@ var squish = function () {
 
     let client_id = cols[ id_index ].innerText;
     let id_container = document.createElement('span');
-    id_container.class = 'name_id_info';
+    id_container.className = 'bookmarklet name_id_info';
     id_container.innerHTML = `(${ client_id })`
 
     let org_name = cols[ org_header_index ].innerText;
@@ -89,7 +89,7 @@ var squish = function () {
     
     let name_cell = cols[ name_header_index ];
     let name_node = name_cell.querySelectorAll( 'a' )[0];
-    name_node.appendChild( id_container );
+    name_node.parentNode.insertBefore( id_container, name_node.nextSibling );
     name_cell.appendChild( name_subtitle_container );
 
     // Change dates to days, but keep date data around in a tooltip
@@ -150,7 +150,7 @@ var squish = function () {
 
     // Prepare the new cell
     let tax_year_cell = document.createElement('td');
-    tax_year_cell.className = 'index-table__cell';
+    tax_year_cell.className = 'index-table__cell bookmarklet';
     let tax_year_list = document.createElement('ol');  // `ul` in original, but why did they do an unordered list when the order does matter?
     tax_year_list.className = 'tax-return-list';
     tax_year_cell.appendChild( tax_year_list );
@@ -159,7 +159,8 @@ var squish = function () {
     let tax_year_rows_curr = row.querySelectorAll('.tax-return-list li');
     for ( let year_li_curr of tax_year_rows_curr ) {
       let li = document.createElement('li');
-      li.className = year_li_curr.className + 'bookmarklet';  // get the right tax return id
+      li.id = year_li_curr.id;  // get the right tax return id
+      li.className = 'bookmarklet';
       tax_year_list.appendChild( li );
 
       // Copy year. Note: Feedback said to add year to the assignee. i.e.
@@ -248,7 +249,8 @@ padding: 0 0.5em;
 .tax-return-list__assignment {
 min-height: unset;
 }
-.bookmarklet_org_subtitle {
+.bookmarklet_org_subtitle,
+.bookmarklet.name_id_info {
   font-weight: 400;
 }
 .tax-return-list__certification {
@@ -266,6 +268,7 @@ min-height: unset;
 }
 .bookmarklet .tax-return-list__assignee {
   width: unset;
+  flex-shrink: 1;
 }
   `;
   document.getElementsByTagName('head')[0].appendChild(css);
