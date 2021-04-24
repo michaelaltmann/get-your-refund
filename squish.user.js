@@ -21,8 +21,13 @@
 
 var squish = function () {
 
-  // // Prevent stuff from being added multiple times (implement after development)
-  // if ( document.querySelector('.org_subtitle')  ) { return; }
+  // Prevent stuff from being added multiple times (implement after development)
+  if ( document.querySelector( '.squish' )  ) {
+    console.log( 'squish has already run' );
+    return;
+  }
+
+  document.body.className += ' squish';
 
   // // Be able to turn dates into business days
   // let moment_script = document.createElement('script');
