@@ -225,7 +225,7 @@ var squish = function () {
   let new_years_header = document.createElement('th');
   new_years_header.className = 'bookmarklet_tax_year_col index-table__header';
   new_years_header.setAttribute( 'scope', 'col' );
-  new_years_header.innerText = 'Tax years info';
+  new_years_header.innerText = 'Tax years, Statuses, Assignees';
 
   let header_row = all_rows[0];
   let cols = header_row.querySelectorAll(':scope > *');
