@@ -41,7 +41,9 @@ var squish = function () {
   // console.log( diff );
 
   // Turning the dates into business days
-  // IMPORTANT: Only works for client dates in the same year as today
+  // IMPORTANT: Only works for client dates in the same year as today. GYR column
+  // excludes the year, so I use `today` to add today's year to whatever data is
+  // present in the relevant column.
   let today = new Date();
   let this_year = today.getFullYear();
   let one_day_ms = 1000 * 60 * 60 * 24;
