@@ -21,7 +21,7 @@
 
 var squish = function () {
 
-  // Prevent stuff from being added multiple times (implement after development)
+  // Prevent stuff from being added multiple times
   if ( document.querySelector( '.squish' )  ) {
     console.log( 'squish has already run' );
     return;
