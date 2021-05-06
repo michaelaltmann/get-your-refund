@@ -16,7 +16,7 @@
 
 var squish = function () {
 
-  // Prevent stuff from being added multiple times (implement after development)
+  // Prevent stuff from being added multiple times
   if ( document.querySelector( '.squish' )  ) {
     console.log( 'squish has already run' );
     return;
@@ -26,6 +26,10 @@ var squish = function () {
 
   // Turning the dates into days
   // IMPORTANT: Only works for client dates in the same year as the current day
+  // Turning the dates into days
+  // IMPORTANT: Only works for client dates in the same year as today. GYR column
+  // excludes the year, so I use `today` to add today's year to whatever data is
+  // present in the relevant column.
   let today = new Date();
   let this_year = today.getFullYear();
   let one_day_ms = 1000 * 60 * 60 * 24;
