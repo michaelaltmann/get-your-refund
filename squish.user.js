@@ -10,14 +10,9 @@
 // @match        https://*.getyourrefund.org/en/hub/clients/sla-breaches
 // ==/UserScript==
 
-// // <script data-main="scripts/app" src="scripts/require.js"></script>
-// let require_script = document.createElement('script');
-// require_script.src = 'scripts/require.js';
-// document.body.appendChild( require_script );
-// let moment_script = document.createElement('<script src="moment.js"></script>');
-// let days_script = document.createElement('<script src="moment-business-days.js"></script>');
-
-// let business_days = require('moment-business-days');
+// External libraries currently can't be imported.
+// If/When we can implement it, there's a library for calculating
+// business days: moment-business-days.js. It uses moment.js
 
 var squish = function () {
 
@@ -29,18 +24,9 @@ var squish = function () {
 
   document.body.className += ' squish';
 
-  // // Be able to turn dates into business days
-  // let moment_script = document.createElement('script');
-  // moment_script.src = 'moment.js';
-  // document.body.appendChild( moment_script );
-  // let days_script = document.createElement('script');
-  // days_script.src = 'moment-business-days.js';
-  // document.body.appendChild( days_script );
-
-  // let diff = moment('Mar 12 2:13 AM', 'MMMM DD LT').businessDiff(moment());
-  // console.log( diff );
-
-  // Turning the dates into business days
+  // Turning the dates into days
+  // IMPORTANT: Only works for client dates in the same year as the current day
+  // Turning the dates into days
   // IMPORTANT: Only works for client dates in the same year as today. GYR column
   // excludes the year, so I use `today` to add today's year to whatever data is
   // present in the relevant column.
@@ -55,7 +41,8 @@ var squish = function () {
   let lang_header_index = 4;
   let unemployment_index = 5;
   let updated_index = 6;
-  let waiting_index = 7;
+  // Engineering has updated this to calculate its own business days
+  // let waiting_index = 7;
   let created_index = 8;
   for ( let header_i = 0; header_i < column_headers.length; header_i++ ) {
     let text = column_headers[ header_i ].innerText;
@@ -69,10 +56,6 @@ var squish = function () {
     if ( text === 'Updated At' ) {
       updated_index = header_i;
       column_headers[ header_i ].querySelector('span').innerHTML = 'Updated<br>at';
-    }
-    if ( text === 'Waiting on response' ) {
-      waiting_index = header_i;
-      column_headers[ header_i ].querySelector('span').innerHTML = 'Waiting on<br>response';
     }
     if ( text === 'Created at' ) { created_index = header_i; }
   }
@@ -101,20 +84,14 @@ var squish = function () {
 
     // Change dates to days, but keep date data around in a tooltip
     let updated_days = '-';
-    let waiting_days = '-';
     let created_days = '-';
 
     let updated_text = cols[ updated_index ].innerText;
-    let waiting_text = cols[ waiting_index ].innerText;
     let created_text = cols[ created_index ].innerText;
 
     if ( updated_text ) {
       let date = new Date( updated_text + ` ${this_year}` );
       updated_days = Math.round(( today - date) / one_day_ms);
-    }
-    if ( waiting_text ) {
-      let date = new Date( waiting_text + ` ${this_year}` );
-      waiting_days = Math.round(( today - date) / one_day_ms);
     }
     if ( created_text ) {
       let date = new Date( created_text + ` ${this_year}` );
@@ -131,7 +108,6 @@ var squish = function () {
     }
 
     cols[ updated_index ].innerHTML = with_tooltip( updated_days + ' days', `Includes weekends</br>${ updated_text }` );
-    cols[ waiting_index ].innerHTML = with_tooltip( waiting_days + ' days', `Includes weekends</br>${ waiting_text }` );
     cols[ created_index ].innerHTML = with_tooltip( created_days + ' days', `Includes weekends</br>${ created_text }` );
 
     // Show the tooltip with extra info if appropriate
